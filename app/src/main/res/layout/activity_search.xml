@@ -1,0 +1,77 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="mypmt.myapps.com.mypmt.SearchActivity">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:background="@color/PMT_DARK_RIBBN"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fromTextView"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_centerHorizontal="true"
+            android:padding="8dp"
+            android:layout_marginLeft="16dp"
+
+            android:background="@android:color/background_light"
+            android:hint="From" android:translationZ="4dp"/>
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:translationZ="4dp"
+            android:text=""
+            android:visibility="gone"
+            android:layout_marginBottom="8dp"
+            android:id="@+id/Rout_NumTextView"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:hint="Enter Route Number"
+            android:background="@android:color/background_light"
+            android:layout_gravity="center_horizontal" />
+
+        <AutoCompleteTextView
+
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toTextView"
+            android:layout_below="@+id/autoCompleteTextView"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:background="@android:color/background_light"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="8dp"
+            android:translationZ="4dp"
+            android:hint="To" />
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:background="@android:color/background_light"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/linearLayout" />
+
+</RelativeLayout>
