@@ -1,16 +1,29 @@
 package mypmt.myapps.com.mypmt;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+
+import java.io.File;
 
 
-public class SearchActivity extends ActionBarActivity {
+public class SearchActivity extends ActionBarActivity implements TextWatcher, AdapterView.OnItemClickListener {
     AutoCompleteTextView fromTextView, toTextView, Rout_NumTextView;
-
+    String[] route_list = {"Aaundh", "Baner", "Chinchwad", "Dapodi", "E-Square", "Fursungi", "Gangadham", "Hadpsar", "Ingale vasti",
+            "Jam mil", "Kalewadi", "Narayan Peth", "Pimpale Gurav", "Pimple Nilakh", "Ram Nagar", "Shivajinagar", "Telco", "Urali-Kanchan", "Vadawane", "Wakad"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -19,10 +32,15 @@ public class SearchActivity extends ActionBarActivity {
         fromTextView = (AutoCompleteTextView) findViewById(R.id.fromTextView);
         toTextView = (AutoCompleteTextView) findViewById(R.id.toTextView);
         Rout_NumTextView = (AutoCompleteTextView) findViewById(R.id.Rout_NumTextView);
-        /*anim_up = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move_up);
-        anim_down = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move_down);
-        anim_up.setAnimationListener(this);
-        anim_down.setAnimationListener(this);*/
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.autoc_label, route_list);
+        fromTextView.setAdapter(adapter);
+        toTextView.setAdapter(adapter);
+        /*fromTextView.addTextChangedListener(this);
+        toTextView.addTextChangedListener(this);*/
+        fromTextView.setOnItemClickListener(this);
+        toTextView.setOnItemClickListener(this);
+        Rout_NumTextView.addTextChangedListener(this);
+        new LoadStopsTask().execute("");
     }
 
 
@@ -45,8 +63,7 @@ public class SearchActivity extends ActionBarActivity {
 
             return true;
         } else if (id == R.id.action_by_location) {
-            //   toTextView.startAnimation(anim_down);
-            //fromTextView.startAnimation(anim_up);
+
             Rout_NumTextView.setVisibility(View.GONE);
             fromTextView.setVisibility(View.VISIBLE);
             toTextView.setVisibility(View.VISIBLE);
@@ -54,8 +71,6 @@ public class SearchActivity extends ActionBarActivity {
         } else if (id == R.id.action_by_route) {
 
             Rout_NumTextView.setVisibility(View.VISIBLE);
-            //  fromTextView.startAnimation(anim_up);
-            //toTextView.startAnimation(anim_down);
             fromTextView.setVisibility(View.GONE);
             toTextView.setVisibility(View.GONE);
 
@@ -64,4 +79,71 @@ public class SearchActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String item_selected = parent.getItemAtPosition(position).toString();
+
+        Toast.makeText(getApplication(), item_selected, Toast.LENGTH_SHORT).show();
+
+    }
+
+    class LoadStopsTask extends AsyncTask<String, Boolean, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            Gson gson = new Gson();
+            File myDir;
+            if (isExternalStorageReadable()) {
+                String path = Environment.getExternalStorageDirectory().getPath();
+                Log.i("File path:", path);
+                myDir = new File(path + "/MyPMT/");
+                if (!myDir.exists()) {
+                    myDir.mkdirs();
+                    Log.i("Dir", myDir.getPath() + " Created!");
+                    // Toast.makeText(getApplication(),"Directory created!",Toast.LENGTH_SHORT).show();
+
+                } else {
+                    // Toast.makeText(getApplication(),"Directory already exist!",Toast.LENGTH_SHORT).show();
+                    Log.i("Dir", myDir.getPath() + " already exist!");
+                }
+
+            }
+
+
+            return null;
+        }
+    }
+
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    /* Checks if external storage is available to at least read */
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
+    }
 }

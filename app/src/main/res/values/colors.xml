@@ -5,4 +5,6 @@
     <color name="PMT_DARK_RIBBN">#FFC107</color>
     <color name="fb">#3b5998</color>
     <color name="twtr">#00aced</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>
