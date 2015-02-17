@@ -1,5 +1,7 @@
 package mypmt.myapps.com.mypmt;
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,13 +20,20 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import mypmt.myapps.com.loaders.StopListLoader;
+import mypmt.myapps.com.models.JsonStopListParser;
 
 
-public class SearchActivity extends ActionBarActivity implements TextWatcher, AdapterView.OnItemClickListener {
+public class SearchActivity extends ActionBarActivity implements TextWatcher, AdapterView.OnItemClickListener , android.support.v4.app.LoaderManager.LoaderCallbacks<List<String>> {
     AutoCompleteTextView fromTextView, toTextView, Rout_NumTextView;
+    private ArrayAdapter<String> adapter;
+    List<String> sList;
     String[] route_list = {"Aaundh", "Baner", "Chinchwad", "Dapodi", "E-Square", "Fursungi", "Gangadham", "Hadpsar", "Ingale vasti",
             "Jam mil", "Kalewadi", "Narayan Peth", "Pimpale Gurav", "Pimple Nilakh", "Ram Nagar", "Shivajinagar", "Telco", "Urali-Kanchan", "Vadawane", "Wakad"};
-
+    private static int LOADER_ID=1;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +41,8 @@ public class SearchActivity extends ActionBarActivity implements TextWatcher, Ad
         fromTextView = (AutoCompleteTextView) findViewById(R.id.fromTextView);
         toTextView = (AutoCompleteTextView) findViewById(R.id.toTextView);
         Rout_NumTextView = (AutoCompleteTextView) findViewById(R.id.Rout_NumTextView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.autoc_label, route_list);
+
+         adapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.autoc_label, sList);
         fromTextView.setAdapter(adapter);
         toTextView.setAdapter(adapter);
         /*fromTextView.addTextChangedListener(this);
@@ -40,7 +50,8 @@ public class SearchActivity extends ActionBarActivity implements TextWatcher, Ad
         fromTextView.setOnItemClickListener(this);
         toTextView.setOnItemClickListener(this);
         Rout_NumTextView.addTextChangedListener(this);
-        new LoadStopsTask().execute("");
+//        new LoadStopsTask().execute("");
+        getSupportLoaderManager().initLoader(LOADER_ID,null,this);
     }
 
 
@@ -102,7 +113,25 @@ public class SearchActivity extends ActionBarActivity implements TextWatcher, Ad
 
     }
 
-    class LoadStopsTask extends AsyncTask<String, Boolean, Boolean> {
+    @Override
+    public android.support.v4.content.Loader onCreateLoader(int id, Bundle args) {
+        return new StopListLoader(this);
+    }
+
+    @Override
+    public void onLoadFinished(android.support.v4.content.Loader<List<String>> loader, List<String> data) {
+        adapter.addAll(data);
+    }
+
+
+    @Override
+    public void onLoaderReset(android.support.v4.content.Loader loader) {
+    adapter.clear();
+
+    }
+
+
+    /*class LoadStopsTask extends AsyncTask<String, Boolean, Boolean> {
 
         @Override
         protected Boolean doInBackground(String... params) {
@@ -128,7 +157,7 @@ public class SearchActivity extends ActionBarActivity implements TextWatcher, Ad
             return null;
         }
     }
-
+*/
     public boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {

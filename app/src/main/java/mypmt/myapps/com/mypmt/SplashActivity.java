@@ -1,154 +1,135 @@
 package mypmt.myapps.com.mypmt;
 
-import mypmt.myapps.com.mypmt.util.SystemUiHider;
-
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.os.Build;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.Environment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ProgressBar;
+
+import org.apache.http.util.ByteArrayBuffer;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- *
- * @see SystemUiHider
- */
 public class SplashActivity extends Activity {
-    /**
-     * Whether or not the system UI should be auto-hidden after
-     * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
-     */
-    private static final boolean AUTO_HIDE = true;
 
-    /**
-     * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
-     * user interaction before hiding the system UI.
-     */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
-
-    /**
-     * If set, will toggle the system UI visibility upon interaction. Otherwise,
-     * will show the system UI visibility upon interaction.
-     */
-    private static final boolean TOGGLE_ON_CLICK = true;
-
-    /**
-     * The flags to pass to {@link SystemUiHider#getInstance}.
-     */
-    private static final int HIDER_FLAGS = SystemUiHider.FLAG_HIDE_NAVIGATION;
-
-    /**
-     * The instance of the {@link SystemUiHider} for this activity.
-     */
-    private SystemUiHider mSystemUiHider;
+    ProgressBar index_progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_splash);
+        index_progress = (ProgressBar) findViewById(R.id.progress_index);
+        new DownloadStopListTask().execute(GlobalData.STOPS_INDEX_URL);
+    }
 
-        final View controlsView = findViewById(R.id.fullscreen_content_controls);//bottom linear layout
-        final View contentView = findViewById(R.id.fullscreen_content);//text view
 
-        // Set up an instance of SystemUiHider to control the system UI for
-        // this activity.
-        mSystemUiHider = SystemUiHider.getInstance(this, contentView, HIDER_FLAGS);
-        mSystemUiHider.setup();
-        mSystemUiHider.setOnVisibilityChangeListener(new SystemUiHider.OnVisibilityChangeListener() {
-                    // Cached values.
-                    int mControlsHeight;
-                    int mShortAnimTime;
-
-                    @Override
-                    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-                    public void onVisibilityChange(boolean visible) {
-                        Log.i("status","OnVisibility called");
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-                            // If the ViewPropertyAnimator API is available(Honeycomb MR2 and later), use it to animate the
-                            // in-layout UI controls at the bottom of the screen.
-                            if (mControlsHeight == 0) {
-                                mControlsHeight = controlsView.getHeight();
-                            }
-                            if (mShortAnimTime == 0) {
-                                mShortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-                            }
-                            controlsView.animate().translationY(visible ? 0 : mControlsHeight).setDuration(mShortAnimTime);
-                        } else {
-                            // If the ViewPropertyAnimator APIs aren't available, simply show or hide the in-layout UI controls.
-                            controlsView.setVisibility(visible ? View.VISIBLE : View.GONE);
-                        }
-
-                        if (visible && AUTO_HIDE) {
-                            // Schedule a hide().
-                            delayedHide(AUTO_HIDE_DELAY_MILLIS);
-                        }
-                    }
-                });
-
-        // Set up the user interaction to manually show or hide the system UI.
-        contentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (TOGGLE_ON_CLICK) {
-                    mSystemUiHider.toggle();
-                } else {
-                    mSystemUiHider.show();
-                }
-            }
-        });
-
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_splash, menu);
+        return true;
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-        // Trigger the initial hide() shortly after the activity has been
-        // created, to briefly hint to the user that UI controls
-        // are available.
-        delayedHide(100);
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
+    private class DownloadStopListTask extends AsyncTask<String, Integer, Boolean> {
 
-    /**
-     * Touch listener to use for in-layout UI controls to delay hiding the
-     * system UI. This is to prevent the jarring behavior of controls going away
-     * while interacting with activity UI.
-     */
-    View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
+
         @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (AUTO_HIDE) {
-                delayedHide(AUTO_HIDE_DELAY_MILLIS);
+        protected Boolean doInBackground(String... params) {
+            Boolean Result = new Boolean(false);
+            String url = params[0];
+            FileOutputStream fos = null;
+            int counter_progrss = 0;
+            try {
+                File Roots = Environment.getExternalStorageDirectory();
+                File file = new File("StopIndex.json");
+                File myDir = null;
+                if (Roots != null) {
+                    myDir = new File(Roots.getPath() + "/MyPMT");
+                    if (!myDir.exists())
+                        myDir.mkdirs();
+
+                }
+                File tempFile = new File(myDir + "/" + file.getPath());
+                if (tempFile.exists())
+                {
+                    publishProgress(100);
+                    return Result = true;
+                }
+
+                URL address = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) address.openConnection();
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    Log.i("Status:", "Server returned HTTP " + connection.getResponseCode()
+                            + " " + connection.getResponseMessage());
+                }
+                InputStream is = connection.getInputStream();
+                BufferedInputStream bis = new BufferedInputStream(is);
+                ByteArrayBuffer bab = new ByteArrayBuffer(64);
+                int current = 0;
+
+                while ((current = bis.read()) != -1) {
+                    publishProgress(++counter_progrss);
+                    bab.append((byte) current);
+                }
+
+
+                fos = new FileOutputStream(new File(myDir.getPath() + "/"+GlobalData.STOP_INDEX_FILE));
+                fos.write(bab.toByteArray());
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return Result;
+            } finally {
+                try {
+                    if (fos != null)
+                        fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            return false;
-        }
-    };
 
-    Handler mHideHandler = new Handler();
-    Runnable mHideRunnable = new Runnable() {
+            return Result = true;
+        }
+
         @Override
-        public void run() {
-            mSystemUiHider.hide();
+        protected void onProgressUpdate(Integer... values) {
+            index_progress.setProgress(values[0]);
         }
-    };
 
-    /**
-     * Schedules a call to hide() in [delay] milliseconds, canceling any
-     * previously scheduled calls.
-     */
-    private void delayedHide(int delayMillis) {
-        mHideHandler.removeCallbacks(mHideRunnable);
-        mHideHandler.postDelayed(mHideRunnable, delayMillis);
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            Intent i = new Intent(SplashActivity.this, SearchActivity.class);
+            startActivity(i);
+            finish();
+        }
     }
 }
