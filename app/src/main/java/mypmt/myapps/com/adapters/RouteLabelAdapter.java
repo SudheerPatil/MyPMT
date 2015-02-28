@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import mypmt.myapps.com.models.RouteInfo;
@@ -25,6 +26,7 @@ public class RouteLabelAdapter extends BaseAdapter implements Filterable {
     Context mContext;
     LayoutInflater inflater;
     static Filter filter;
+    List<RouteInfo> TempList;
 
     public RouteLabelAdapter(Context mContext, List<RouteInfo> rList) {
         this.mContext = mContext;
@@ -84,6 +86,11 @@ public class RouteLabelAdapter extends BaseAdapter implements Filterable {
 
         if (rList != null) {
             rList.addAll(collection);
+            if (TempList == null) {
+                TempList = new ArrayList<RouteInfo>(150);
+                Collections.copy(TempList, (List<? extends RouteInfo>) collection);
+            }
+
         }
         notifyDataSetChanged();
     }
@@ -110,28 +117,27 @@ public class RouteLabelAdapter extends BaseAdapter implements Filterable {
 
     private class MyFilter extends Filter {
 
-        ArrayList<RouteInfo> tempList;
+
         @Override
         protected FilterResults performFiltering(CharSequence prefix) {
             // this will be done in different thread
             // so you could even download this data from internet
             Log.i("Filter", "Performing Filtering...");
-            Log.i("prefix",prefix.toString());
+            //   Log.i("TempList", TempList.toString());
             FilterResults results = new FilterResults();
             if (rList == null)
                 rList = new ArrayList<RouteInfo>();
-            tempList = new ArrayList<RouteInfo>();
+
             if (prefix == null || prefix.length() == 0) {
+
                 notifyDataSetChanged();
                 ArrayList<RouteInfo> allMatching = (ArrayList<RouteInfo>) rList;//new ArrayList<RouteInfo>();
                 results.values = allMatching;
                 results.count = allMatching.size();
-                tempList = (ArrayList<RouteInfo>)rList;
-                System.out.println(results.values.toString());
             } else {
                 String prefixString = prefix.toString().toLowerCase();
-                ArrayList<RouteInfo> values;
-                values = new ArrayList<RouteInfo>(tempList);//doubt
+                Log.i("performing Filtereing", rList.toString());
+                ArrayList<RouteInfo> values = new ArrayList<RouteInfo>(rList);//doubt
                 final int count = values.size();
                 final ArrayList<RouteInfo> newValues = new ArrayList<RouteInfo>();
                 for (int i = 0; i < count; i++) {
@@ -156,7 +162,7 @@ public class RouteLabelAdapter extends BaseAdapter implements Filterable {
 
                 results.values = newValues;
                 results.count = newValues.size();
-                System.out.println(results.values.toString());
+
             }
 
             return results;
@@ -165,13 +171,10 @@ public class RouteLabelAdapter extends BaseAdapter implements Filterable {
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             Log.i("Filter:", "Publishing Filtered Result!");
-            if(tempList!=null)
-                tempList.clear();
-            tempList = (ArrayList<RouteInfo>) results.values;
-            System.out.println(rList.toString());
+            rList = (ArrayList<RouteInfo>) results.values;
+            Log.i("Publishing result:", rList.toString());
             if (results.count > 0) {
                 notifyDataSetChanged();
-                System.out.println(rList.toString());
             } else {
                 notifyDataSetInvalidated();
             }
