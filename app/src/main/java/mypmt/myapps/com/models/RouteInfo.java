@@ -55,11 +55,6 @@ public class RouteInfo {
 
     @Override
     public String toString() {
-        return "RouteInfo{" +
-                "route_num=" + route_num +
-                ", from_str='" + from_str + '\'' +
-                ", to_str='" + to_str + '\'' +
-                ", via_str='" + via_str + '\'' +
-                '}';
+        return getRoute_num();
     }
 }

@@ -42,6 +42,7 @@ public class StopListLoader extends AsyncTaskLoader<List<String>> {
         stop_list = data;
 
         if (isStarted()) {
+            if(data!=null)
             super.deliverResult(data);
         }
         if (stop_list != null && stop_list != data) {

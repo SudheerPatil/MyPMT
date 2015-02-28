@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +31,7 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
         index_progress = (ProgressBar) findViewById(R.id.progress_index);
         new DownloadStopListTask().execute(GlobalData.STOPS_INDEX_URL);
+        new DownloadRouteListTask().execute(GlobalData.ROUTE_INDEX_URL);
     }
 
 
@@ -77,9 +77,8 @@ public class SplashActivity extends Activity {
 
                 }
                 File tempFile = new File(myDir + "/" + file.getPath());
-                if (tempFile.exists())
-                {
-                    publishProgress(100);
+                if (tempFile.exists()) {
+                    publishProgress(50);
                     return Result = true;
                 }
 
@@ -100,7 +99,7 @@ public class SplashActivity extends Activity {
                 }
 
 
-                fos = new FileOutputStream(new File(myDir.getPath() + "/"+GlobalData.STOP_INDEX_FILE));
+                fos = new FileOutputStream(new File(myDir.getPath() + "/" + GlobalData.STOP_INDEX_FILE));
                 fos.write(bab.toByteArray());
 
 
@@ -131,5 +130,78 @@ public class SplashActivity extends Activity {
             startActivity(i);
             finish();
         }
+    }
+
+
+    private class DownloadRouteListTask extends AsyncTask<String, Integer, Boolean> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            Boolean result = new Boolean(false);
+            String url = params[0];
+            FileOutputStream fos = null;
+            int counter_progrss = 0;
+            try {
+                File Roots = Environment.getExternalStorageDirectory();
+                File file = new File("RouteIndex.json");
+                File myDir = null;
+                if (Roots != null) {
+                    myDir = new File(Roots.getPath() + "/MyPMT");
+                    if (!myDir.exists())
+                        myDir.mkdirs();
+
+                }
+                File tempFile = new File(myDir + "/" + file.getPath());
+                if (tempFile.exists()) {
+                    publishProgress(100);
+                    return result = true;
+                }
+                URL address = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) address.openConnection();
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    Log.i("Status:", "Server returned HTTP " + connection.getResponseCode() + " " + connection.getResponseMessage());
+                }
+                InputStream is = connection.getInputStream();
+                BufferedInputStream bis = new BufferedInputStream(is);
+                ByteArrayBuffer bab = new ByteArrayBuffer(64);
+                int current = 0;
+
+                while ((current = bis.read()) != -1) {
+                    publishProgress(++counter_progrss+50);
+                    bab.append((byte) current);
+                }
+
+
+                fos = new FileOutputStream(new File(myDir.getPath() + "/" + GlobalData.ROUTE_INDET_FILE));
+                fos.write(bab.toByteArray());
+                result = true;
+            } catch (IOException ioexception) {
+                ioexception.printStackTrace();
+            } finally {
+                try {
+                    if (fos != null)
+                        fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return result;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            index_progress.setProgress(values[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean bool) {
+            super.onPostExecute(bool);
+        }
+
+
     }
 }

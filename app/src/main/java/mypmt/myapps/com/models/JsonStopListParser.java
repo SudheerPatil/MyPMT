@@ -37,8 +37,9 @@ public class JsonStopListParser {
     public List<String> getStop_list() {
         return stop_list;
     }
-    public void releaseResources(){
-        if(freader!=null){
+
+    public void releaseResources() {
+        if (freader != null) {
             try {
                 freader.close();
             } catch (IOException e) {
@@ -48,23 +49,22 @@ public class JsonStopListParser {
 
 
     }
+
     public void ParseJsonFile() {
         File Rootdir = Environment.getExternalStorageDirectory();
         if (Rootdir != null) {
-            mFile = new File(Rootdir.getPath() + "/"+GlobalData.APP_FOLDER+"/" + GlobalData.STOP_INDEX_FILE);
+            mFile = new File(Rootdir.getPath() + "/" + GlobalData.APP_FOLDER + "/" + GlobalData.STOP_INDEX_FILE);
             if (!mFile.exists()) {
                 return;
             } else {
                 JSONParser jsonParser = new JSONParser();
-
-
                 try {
                     freader = new FileReader(mFile);
                     JSONObject jsonObject = (JSONObject) jsonParser.parse(freader);
                     Set<Object> set = jsonObject.keySet();
                     this.stop_list = new ArrayList(set);
                     Collections.sort(this.stop_list);
-                    System.out.println(this.stop_list.toString());
+                    //System.out.println(this.stop_list.toString());
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (ParseException e) {

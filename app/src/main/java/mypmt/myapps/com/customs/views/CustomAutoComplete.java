@@ -1,6 +1,8 @@
 package mypmt.myapps.com.customs.views;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.widget.AutoCompleteTextView;
 
@@ -20,9 +22,7 @@ public class CustomAutoComplete extends AutoCompleteTextView {
         super(context);
     }
 
-    @Override
-    protected CharSequence convertSelectionToString(Object selectedItem) {
-        //Here is logic we have to put object-> String here!
-        return super.convertSelectionToString(selectedItem);
-    }
+
+
+
 }
