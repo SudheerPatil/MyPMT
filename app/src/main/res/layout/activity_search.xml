@@ -5,55 +5,56 @@
     tools:context="mypmt.myapps.com.mypmt.SearchActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="@color/PMT_DARK_RIBBN"
-        android:id="@+id/linearLayout"
         android:elevation="1dp"
+        android:orientation="horizontal"
         android:weightSum="1">
 
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0.98"
+            android:background="@color/PMT_DARK_RIBBN"
+            android:orientation="vertical"
+            android:paddingBottom="8dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:paddingTop="8dp"
-            android:background="@color/PMT_DARK_RIBBN"
-            android:paddingBottom="8dp"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/linearLayout"
-            android:layout_weight="0.98">
+            android:paddingTop="8dp">
 
             <AutoCompleteTextView
+                android:id="@+id/fromTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/fromTextView"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:padding="8dp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:background="@android:color/background_light"
                 android:hint="From"
+                android:padding="8dp"
                 android:translationZ="4dp" />
+
             <mypmt.myapps.com.customs.views.CustomAutoComplete
+                android:id="@+id/Rout_NumTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:translationZ="4dp"
-                android:text=""
-
-                android:completionThreshold="1"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="8dp"
-                android:id="@+id/Rout_NumTextView"
-                android:layout_marginTop="8dp"
                 android:layout_marginLeft="16dp"
-                android:hint="Enter Route Number"
+                android:layout_marginTop="8dp"
                 android:background="@android:color/background_light"
-                android:layout_gravity="center_horizontal" />
+                android:completionThreshold="1"
+                android:hint="Enter Route Number"
+                android:padding="8dp"
+                android:text=""
+                android:translationZ="4dp"
+                android:visibility="gone" />
             <!--<AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,38 +73,38 @@
 
             <AutoCompleteTextView
 
-                android:padding="8dp"
+                android:id="@+id/toTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/toTextView"
-
-                android:layout_below="@+id/autoCompleteTextView"
                 android:layout_alignParentLeft="true"
+
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/autoCompleteTextView"
+                android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:background="@android:color/background_light"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="8dp"
-                android:translationZ="4dp"
-                android:hint="To" />
+                android:hint="To"
+                android:padding="8dp"
+                android:translationZ="4dp" />
         </LinearLayout>
 
         <ImageButton
+            android:id="@+id/swipe_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/swipe_btn"
-            android:background="@null"
-            android:layout_weight=".02"
             android:layout_gravity="center"
+            android:layout_weight=".02"
+            android:background="@null"
             android:src="@drawable/ic_arrow_repeat_new" />
     </LinearLayout>
 
     <ListView
+        android:id="@+id/listView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:background="@android:color/background_light"
+        android:layout_below="@+id/linearLayout"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/linearLayout" />
+        android:background="@android:color/background_light" />
 
 
 </RelativeLayout>
