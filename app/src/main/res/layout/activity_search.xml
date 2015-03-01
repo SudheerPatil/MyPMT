@@ -83,7 +83,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:background="@android:color/background_light"
-                android:hint="To"
+                android:hint="Too"
                 android:padding="8dp"
                 android:translationZ="4dp" />
         </LinearLayout>
