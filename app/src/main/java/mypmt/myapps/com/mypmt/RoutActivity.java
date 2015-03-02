@@ -1,35 +1,32 @@
 package mypmt.myapps.com.mypmt;
 
-import android.media.Image;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.List;
+import mypmt.myapps.com.models.JsonRouteInfoParser;
 
 
 public class RoutActivity extends ActionBarActivity {
     ListView stopListview;
-    TextView FromText,ToText;
+    TextView FromText, ToText;
     ImageView route_Bus_icon;
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rout);
-        FromText=(TextView)findViewById(R.id.route_from_txt);
-        ToText =(TextView)findViewById(R.id.route_to_txt);
-        route_Bus_icon=(ImageView)findViewById(R.id.rout_image);
-        stopListview=(ListView)findViewById(R.id.rout_listview);
-
+        FromText = (TextView) findViewById(R.id.route_from_txt);
+        ToText = (TextView) findViewById(R.id.route_to_txt);
+        route_Bus_icon = (ImageView) findViewById(R.id.rout_image);
+        stopListview = (ListView) findViewById(R.id.rout_listview);
+        JsonRouteInfoParser jsonRouteInfoParser = new JsonRouteInfoParser(null);
+        jsonRouteInfoParser.ParseJsonFile(jsonRouteInfoParser);
     }
 
 

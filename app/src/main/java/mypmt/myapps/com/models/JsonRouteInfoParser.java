@@ -11,7 +11,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import mypmt.myapps.com.mypmt.GlobalData;
@@ -20,9 +22,14 @@ import mypmt.myapps.com.mypmt.GlobalData;
  * Created by Sudheer on 01-03-2015.
  */
 public class JsonRouteInfoParser {
+    public JsonRouteInfoParser(File mFile) {
+        this.mFile = mFile;
+        this.routeInfoComplete = new RouteInfoComplete();
+    }
+
     private File mFile;
     private FileReader freader;
-
+    private RouteInfoComplete routeInfoComplete;
     public void releaseResources() {
         if (freader != null) {
             try {
@@ -32,45 +39,65 @@ public class JsonRouteInfoParser {
             }
         }
     }
-    public void ParseJsonFile() {
+
+    public void ParseJsonFile(JsonRouteInfoParser jsonRouteInfoParser) {
         File Rootdir = Environment.getExternalStorageDirectory();
         if (Rootdir != null) {
-            mFile = new File(Rootdir.getPath() + "/" + GlobalData.APP_FOLDER + "/" + GlobalData.Temp_file);
-            if (!mFile.exists()) {
+            jsonRouteInfoParser.mFile = new File(Rootdir.getPath() + "/" + GlobalData.APP_FOLDER + "/" + GlobalData.Temp_file);
+            if (!jsonRouteInfoParser.mFile.exists()) {
                 return;
             } else {
                 JSONParser jsonParser = new JSONParser();
                 try {
-                    freader = new FileReader(mFile);
-                    JSONObject jsonObject = (JSONObject) jsonParser.parse(freader);
+                    jsonRouteInfoParser.freader = new FileReader(jsonRouteInfoParser.mFile);
+                    JSONObject jsonObject = (JSONObject) jsonParser.parse(jsonRouteInfoParser.freader);
+                    Set<Object> set = jsonObject.keySet();
+                    Iterator<Object> iterator = set.iterator();
+                    while (iterator.hasNext()) {
+                        //System.out.println(iterator.next().toString());
+                        JSONArray array = (JSONArray) jsonObject.get(iterator.next());
+                        System.out.println("Array size:" + array.size());
+                        //System.out.println(array.toString());
+                        JSONObject jsonObject0 = (JSONObject) array.get(0);
+                        JSONArray TripTime0 = (JSONArray) jsonObject0.get("TripTime");
 
-                    //Set<Object> set = jsonObject.keySet();
+                        this.routeInfoComplete.setTimings0(toList(TripTime0));
+                        jsonObject0.remove("TripTime");
+                        Set<JSONObject> set0 = jsonObject0.keySet();
+                        Iterator<JSONObject> iterator0 = set0.iterator();
+                        while (iterator0.hasNext()) {
+                            JSONArray Stops0 = (JSONArray) jsonObject0.get(iterator0.next());
+                            System.out.println(Stops0.toJSONString());
+                            this.routeInfoComplete.setStop_List0(toList(Stops0));
+                        }
+                        JSONObject jsonObject1 = (JSONObject) array.get(1);
+                        JSONArray TripTime1 = (JSONArray) jsonObject1.get("TripTime");
+                        this.routeInfoComplete.setTimings1(toList(TripTime1));
+                        jsonObject1.remove("TripTime");
+                        Set<JSONObject> set1 = jsonObject1.keySet();
+                        Iterator<JSONObject> iterator1 = set1.iterator();
+                        while (iterator1.hasNext()) {
+                            JSONArray Stops1 = (JSONArray) jsonObject1.get(iterator1.next());
+                            System.out.println(Stops1.toJSONString());
+                            this.routeInfoComplete.setStop_List1(toList(Stops1));
+                        }
 
-                    //System.out.println(set);
-                    //Iterator<Object> itrator = set.iterator();
-                    /*while (itrator.hasNext()) {
-                        System.out.println(itrator.next().toString());
-
-                        JSONArray route_details_array = (JSONArray) jsonObject.get(itrator.next());
-                        JSONObject jsonObject1 = (JSONObject) route_details_array.get(0);
-
-                        System.out.print(" " + jsonObject1.get("rout"));
-                        System.out.print(" " + jsonObject1.get("lnk"));
-                        this.route_list.add(new RouteInfo(itrator.next().toString(),
-                                jsonObject1.get("rout").toString(),
-                                null));
                     }
 
-                    // Collections.sort(this.route_list);
-                    //System.out.println(this.route_list.toString());*/
-                }catch(FileNotFoundException e){
+                } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                }catch(ParseException e){
+                } catch (ParseException e) {
                     e.printStackTrace();
-                }catch(IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
+    }
+    private List<String> toList(JSONArray Jarray){
+        List<String> sampleList = new ArrayList<String>();
+        for(Object obj:Jarray)
+        sampleList.add(obj.toString());
+        return sampleList;
     }
 }
