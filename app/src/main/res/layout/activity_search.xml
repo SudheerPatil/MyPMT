@@ -95,7 +95,7 @@
             android:layout_gravity="center"
             android:layout_weight=".02"
             android:background="@null"
-            android:src="@drawable/ic_arrow_repeat_new" />
+            android:src="@drawable/ic_arrow_repeat" />
     </LinearLayout>
 
     <ListView

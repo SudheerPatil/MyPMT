@@ -61,6 +61,8 @@ public class JsonRouteInfoParser {
 
                         String Route_Name = main_entry.getKey().toString();
                         String Route_num = Route_Name.substring(Route_Name.indexOf("Route"), Route_Name.indexOf(":"));
+                        if(Route_Name.contains("via "))
+                        this.routeInfoComplete.setVia_str0(Route_Name.substring(Route_Name.indexOf("via ")+4));
                         this.routeInfoComplete.setHead_title(Route_Name.replace(Route_num+":",""));
                         this.routeInfoComplete.setRoute_num(Route_num);
 
