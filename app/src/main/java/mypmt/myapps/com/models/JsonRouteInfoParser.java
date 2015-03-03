@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import mypmt.myapps.com.mypmt.GlobalData;
@@ -30,6 +31,7 @@ public class JsonRouteInfoParser {
     private File mFile;
     private FileReader freader;
     private RouteInfoComplete routeInfoComplete;
+
     public void releaseResources() {
         if (freader != null) {
             try {
@@ -51,34 +53,39 @@ public class JsonRouteInfoParser {
                 try {
                     jsonRouteInfoParser.freader = new FileReader(jsonRouteInfoParser.mFile);
                     JSONObject jsonObject = (JSONObject) jsonParser.parse(jsonRouteInfoParser.freader);
-                    Set<Object> set = jsonObject.keySet();
+                    Set<Object> set = jsonObject.entrySet();
                     Iterator<Object> iterator = set.iterator();
                     while (iterator.hasNext()) {
                         //System.out.println(iterator.next().toString());
-                        JSONArray array = (JSONArray) jsonObject.get(iterator.next());
+                        Map.Entry main_entry = (Map.Entry) iterator.next();
+
+                        String Route_Name = main_entry.getKey().toString();
+                        String Route_num = Route_Name.substring(Route_Name.indexOf("Route"), Route_Name.indexOf(":"));
+                        this.routeInfoComplete.setHead_title(Route_Name.replace(Route_num+":",""));
+                        this.routeInfoComplete.setRoute_num(Route_num);
+
+                        JSONArray array = (JSONArray) main_entry.getValue();//jsonObject.get(iterator.next());
                         System.out.println("Array size:" + array.size());
                         //System.out.println(array.toString());
                         JSONObject jsonObject0 = (JSONObject) array.get(0);
+                        Iterator iterator0_1 = jsonObject0.entrySet().iterator();
+
                         JSONArray TripTime0 = (JSONArray) jsonObject0.get("TripTime");
 
                         this.routeInfoComplete.setTimings0(toList(TripTime0));
                         jsonObject0.remove("TripTime");
                         Set<JSONObject> set0 = jsonObject0.keySet();
                         Iterator<JSONObject> iterator0 = set0.iterator();
-                        while (iterator0.hasNext()) {
-                            JSONArray Stops0 = (JSONArray) jsonObject0.get(iterator0.next());
-                            System.out.println(Stops0.toJSONString());
-                            this.routeInfoComplete.setStop_List0(toList(Stops0));
-                        }
+
                         JSONObject jsonObject1 = (JSONObject) array.get(1);
                         JSONArray TripTime1 = (JSONArray) jsonObject1.get("TripTime");
                         this.routeInfoComplete.setTimings1(toList(TripTime1));
                         jsonObject1.remove("TripTime");
-                        Set<JSONObject> set1 = jsonObject1.keySet();
+                        Set<JSONObject> set1 = jsonObject1.entrySet();
                         Iterator<JSONObject> iterator1 = set1.iterator();
                         while (iterator1.hasNext()) {
-                            JSONArray Stops1 = (JSONArray) jsonObject1.get(iterator1.next());
-                            System.out.println(Stops1.toJSONString());
+                            Map.Entry entry = (Map.Entry) iterator1.next();
+                            JSONArray Stops1 = (JSONArray) entry.getValue();
                             this.routeInfoComplete.setStop_List1(toList(Stops1));
                         }
 
@@ -94,10 +101,11 @@ public class JsonRouteInfoParser {
             }
         }
     }
-    private List<String> toList(JSONArray Jarray){
+
+    private List<String> toList(JSONArray Jarray) {
         List<String> sampleList = new ArrayList<String>();
-        for(Object obj:Jarray)
-        sampleList.add(obj.toString());
+        for (Object obj : Jarray)
+            sampleList.add(obj.toString());
         return sampleList;
     }
 }

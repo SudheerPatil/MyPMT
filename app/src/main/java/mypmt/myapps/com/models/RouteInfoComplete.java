@@ -7,15 +7,21 @@ import java.util.List;
  */
 public class RouteInfoComplete {
     private String route_num;
-    private String from_str0,to_str0,via_str0;
+    private String head_title;
+    private String from_str0, to_str0, via_str0;
+    private String from_str1;
+    private String to_str1;
+    private String via_str1;
+
     private List<String> Stop_List0;
     private List<String> Timings0;
     private List<String> Stop_List1;
     private List<String> Timings1;
     private boolean isReverse;
 
-    public RouteInfoComplete(String route_num, String from_str0, String to_str0, String via_str0, List<String> stop_List0, List<String> timings0, List<String> stop_List1, List<String> timings1, boolean isReverse) {
+    public RouteInfoComplete(String route_num, String head_title, String from_str0, String to_str0, String via_str0, List<String> stop_List0, List<String> timings0, List<String> stop_List1, List<String> timings1, boolean isReverse) {
         this.route_num = route_num;
+        this.head_title = head_title;
         this.from_str0 = from_str0;
         this.to_str0 = to_str0;
         this.via_str0 = via_str0;
@@ -26,8 +32,9 @@ public class RouteInfoComplete {
         this.isReverse = isReverse;
     }
 
-    public RouteInfoComplete(String route_num, String from_str0, String to_str0, String via_str0, List<String> stop_List0, List<String> timings0, List<String> stop_List1, List<String> timings1) {
+    public RouteInfoComplete(String route_num, String head_title, String from_str0, String to_str0, String via_str0, List<String> stop_List0, List<String> timings0, List<String> stop_List1, List<String> timings1) {
         this.route_num = route_num;
+        this.head_title = head_title;
         this.from_str0 = from_str0;
         this.to_str0 = to_str0;
         this.via_str0 = via_str0;
@@ -110,5 +117,37 @@ public class RouteInfoComplete {
 
     public void setReverse(boolean isReverse) {
         this.isReverse = isReverse;
+    }
+
+    public String getFrom_str1() {
+        return from_str1;
+    }
+
+    public void setFrom_str1(String from_str1) {
+        this.from_str1 = from_str1;
+    }
+
+    public String getTo_str1() {
+        return to_str1;
+    }
+
+    public void setTo_str1(String to_str1) {
+        this.to_str1 = to_str1;
+    }
+
+    public String getVia_str1() {
+        return via_str1;
+    }
+
+    public void setVia_str1(String via_str1) {
+        this.via_str1 = via_str1;
+    }
+
+    public String getHead_title() {
+        return head_title;
+    }
+
+    public void setHead_title(String head_title) {
+        this.head_title = head_title;
     }
 }
