@@ -57,7 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Chinchwad"
+                        android:text="FromStation"
                         android:id="@+id/route_from_txt"
                         android:textColor="#ffffffff"
                         android:typeface="normal"
@@ -66,7 +66,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Katraj"
+                        android:text="ToStation"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:id="@+id/route_to_txt"
                         android:textColor="#ffffffff"

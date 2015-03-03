@@ -1,21 +1,26 @@
 package mypmt.myapps.com.mypmt;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import mypmt.myapps.com.models.JsonRouteInfoParser;
+import mypmt.myapps.com.models.RouteInfoComplete;
 
 
 public class RoutActivity extends ActionBarActivity {
     ListView stopListview;
     TextView FromText, ToText;
     ImageView route_Bus_icon;
-
+    JsonRouteInfoParser jsonRouteInfoParser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +30,9 @@ public class RoutActivity extends ActionBarActivity {
         ToText = (TextView) findViewById(R.id.route_to_txt);
         route_Bus_icon = (ImageView) findViewById(R.id.rout_image);
         stopListview = (ListView) findViewById(R.id.rout_listview);
-        JsonRouteInfoParser jsonRouteInfoParser = new JsonRouteInfoParser(null);
-        jsonRouteInfoParser.ParseJsonFile(jsonRouteInfoParser);
+        jsonRouteInfoParser = new JsonRouteInfoParser(null);
+
+
     }
 
 
@@ -50,5 +56,32 @@ public class RoutActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    private class LoadRouteInfoTask extends AsyncTask{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            jsonRouteInfoParser.ParseJsonFile(jsonRouteInfoParser);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+           //All initialization task will be done here!
+            RouteInfoComplete routeInfoComplete =jsonRouteInfoParser.getRouteInfoComplete();
+            if(routeInfoComplete == null)
+                Log.i("Status:", "No information about Route available!");
+            else
+            {
+
+             //FromText.setText(routeInfoComplete.getFrom_str0());
+             //ToText.setText(routeInfoComplete.getFrom_str0());
+
+            }
+        }
     }
 }

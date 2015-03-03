@@ -108,4 +108,7 @@ public class JsonRouteInfoParser {
             sampleList.add(obj.toString());
         return sampleList;
     }
+    public RouteInfoComplete getRouteInfoComplete(){
+        return this.routeInfoComplete;
+    }
 }
