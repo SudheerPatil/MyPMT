@@ -41,9 +41,10 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="100">
+                    android:weightSum="100"
+                    android:id="@+id/">
 
                     <TextView
                         android:id="@+id/route_from_txt"
@@ -64,7 +65,8 @@
                         android:background="@drawable/bi_dir"
                         android:layout_weight="20"
 
-                        android:text="via Chinchwad Station Circle" />
+                        android:text="via sarang"
+                        android:gravity="center" />
 
 
                     <TextView

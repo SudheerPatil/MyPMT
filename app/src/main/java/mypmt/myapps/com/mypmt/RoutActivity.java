@@ -23,6 +23,7 @@ public class RoutActivity extends ActionBarActivity {
     ImageView route_Bus_icon;
     JsonRouteInfoParser jsonRouteInfoParser;
     TableLayout route_timing_container;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +33,7 @@ public class RoutActivity extends ActionBarActivity {
         viaText = (TextView) findViewById(R.id.route_via_txt);
         route_Bus_icon = (ImageView) findViewById(R.id.rout_image);
         stopListview = (ListView) findViewById(R.id.rout_listview);
-        route_timing_container = (TableLayout)findViewById(R.id.route_timings_container);
+        route_timing_container = (TableLayout) findViewById(R.id.route_timings_container);
         jsonRouteInfoParser = new JsonRouteInfoParser(null);
         new LoadRouteInfoTask().execute(null);
 
@@ -82,27 +83,25 @@ public class RoutActivity extends ActionBarActivity {
             else {
                 String HeadString = routeInfoComplete.getHead_title();
                 String[] tokens = HeadString.split(" to ");
-
-                FromText.setText(tokens[0]);
-                String toString= tokens[1].replace("via " + routeInfoComplete.getVia_str0(), "");
-                ToText.setText(toString);
-                if(routeInfoComplete.getVia_str0()!=null)
+                if (HeadString != null) {
+                    FromText.setText(tokens[0]);
+                    String toString = tokens[1].replace("via " + routeInfoComplete.getVia_str0(), "");
+                    ToText.setText(toString);
+                }
+                if (routeInfoComplete.getVia_str0() != null)
                     viaText.setText(routeInfoComplete.getVia_str0());
-                if(routeInfoComplete.getTimings0()!= null)
-                {
+                if (routeInfoComplete.getTimings0() != null) {
                     List<String> timeL0 = routeInfoComplete.getTimings0();
-                    int size=timeL0.size();
-                    for(int i=0; i < size/5; i++){
-                        for(int j = 0;j < 5 ;j++)
-                        {
+                    int size = timeL0.size();
+                    for (int i = 0; i < size / 5; i++) {
+                        for (int j = 0; j < 5; j++) {
                             //Adding row locgic is here...
                         }
                     }
 
 
                 }
-                if(routeInfoComplete.getTimings1()!= null)
-                {
+                if (routeInfoComplete.getTimings1() != null) {
                     List<String> timeL1 = routeInfoComplete.getTimings0();
                 }
 
