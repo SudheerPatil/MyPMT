@@ -10,16 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="1">
+        android:weightSum="100">
 
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="170dp"
+            android:layout_height="0dp"
             android:layout_gravity="left|top"
-            android:layout_weight=".3"
+            android:layout_weight="20"
             android:background="@color/PMT_DARK_RIBBN"
-            android:elevation="2dp"
+
             android:orientation="horizontal"
             android:padding="8dp">
 
@@ -31,81 +31,102 @@
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
+                android:layout_marginLeft="8dp"
                 android:src="@drawable/bus" />
 
+
             <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100"
+                android:layout_marginLeft="0dp"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/route_from_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="40"
+                    android:text="Pimpari Manapa"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#ffffffff"
+                    android:textStyle="bold"
+                    android:typeface="normal"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/route_via_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:background="@drawable/bi_dir"
+                    android:layout_weight="20"
+
+                    android:text="via chinchwad station "
+                    android:gravity="center" />
+
+
+                <TextView
+                    android:id="@+id/route_to_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="40"
+
+                    android:paddingLeft="4dp"
+                    android:text="Pimpari Manapa"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#ffffffff"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <!--<ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:padding="4dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="100"
-                    android:id="@+id/">
-
-                    <TextView
-                        android:id="@+id/route_from_txt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="40"
-                        android:text="Pimpari Manapa"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#ffffffff"
-                        android:textStyle="bold"
-                        android:typeface="normal" />
-
-                    <TextView
-                        android:id="@+id/route_via_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="8dp"
-                        android:background="@drawable/bi_dir"
-                        android:layout_weight="20"
-
-                        android:text="via sarang"
-                        android:gravity="center" />
-
-
-                    <TextView
-                        android:id="@+id/route_to_txt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="40"
-                        android:paddingLeft="4dp"
-                        android:text="Pimpari Manapa"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#ffffffff"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                android:id="@+id/scrollView">
 
                 <TableLayout
                     android:id="@+id/route_timings_container"
                     android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
                     android:orientation="horizontal"
+
                     android:padding="8dp">
 
 
                 </TableLayout>
+            </ScrollView>-->
 
-            </LinearLayout>
 
         </LinearLayout>
 
-        <ListView
+        <view
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            class="mypmt.myapps.com.customs.views.SlidingTabLayout"
+            android:id="@+id/view2"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="10" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="70"
+            android:background="@android:color/white"/>
+        <!--<ListView
             android:id="@+id/rout_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:background="@color/primary_text_default_material_dark" />
+            android:background="@color/primary_text_default_material_dark" />-->
 
     </LinearLayout>
 
-    <view
+    <!--<view
         android:id="@+id/view"
         class="com.melnykov.fab.FloatingActionButton"
         android:layout_width="wrap_content"
@@ -114,6 +135,6 @@
         android:layout_marginBottom="8dp"
         android:src="@drawable/ic_arrow_repeat"
         app:fab_colorNormal="@color/PMT_DARK_RIBBN"
-        app:fab_colorPressed="@color/PMT_RIBBN" />
+        app:fab_colorPressed="@color/PMT_RIBBN" />-->
 
 </FrameLayout>

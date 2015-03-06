@@ -1,14 +1,18 @@
 package mypmt.myapps.com.mypmt;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.List;
@@ -33,7 +37,7 @@ public class RoutActivity extends ActionBarActivity {
         viaText = (TextView) findViewById(R.id.route_via_txt);
         route_Bus_icon = (ImageView) findViewById(R.id.rout_image);
         stopListview = (ListView) findViewById(R.id.rout_listview);
-        route_timing_container = (TableLayout) findViewById(R.id.route_timings_container);
+        //route_timing_container = (TableLayout) findViewById(R.id.route_timings_container);
         jsonRouteInfoParser = new JsonRouteInfoParser(null);
         new LoadRouteInfoTask().execute(null);
 
@@ -90,20 +94,47 @@ public class RoutActivity extends ActionBarActivity {
                 }
                 if (routeInfoComplete.getVia_str0() != null)
                     viaText.setText(routeInfoComplete.getVia_str0());
-                if (routeInfoComplete.getTimings0() != null) {
-                    List<String> timeL0 = routeInfoComplete.getTimings0();
-                    int size = timeL0.size();
-                    for (int i = 0; i < size / 5; i++) {
-                        for (int j = 0; j < 5; j++) {
-                            //Adding row locgic is here...
-                        }
-                    }
-
-
-                }
                 if (routeInfoComplete.getTimings1() != null) {
                     List<String> timeL1 = routeInfoComplete.getTimings0();
                 }
+               /* if (routeInfoComplete.getTimings0() != null) {
+                    List<String> timeL0 = routeInfoComplete.getTimings0();
+                    int size = timeL0.size();
+
+                    int counter = 0;
+                    for (int i = 0; i < size / 10; i++) {
+                        TableRow tableRow = new TableRow(getApplicationContext());
+                        TableLayout.LayoutParams tableRowParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
+
+                        int leftMargin = 10;
+                        int topMargin = 2;
+                        int rightMargin = 10;
+                        int bottomMargin = 2;
+
+                        tableRowParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
+
+                        tableRow.setLayoutParams(tableRowParams);
+                        do {
+                            TextView textView = new TextView(getApplicationContext());
+
+
+                            textView.setBackgroundResource(R.drawable.rounded_corner);
+                            textView.setTextColor(Color.WHITE);
+                            textView.setText(timeL0.get(counter));
+                           *//* LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                            params.setMargins(1, 1, 1, 1);
+
+                            textView.setLayoutParams(params);*//*
+                            tableRow.addView(textView);
+                            counter++;
+                        } while (counter <= size && counter % 10 != 0);
+                        route_timing_container.addView(tableRow);
+
+                    }
+
+                }*/
+
+
 
             }
         }
