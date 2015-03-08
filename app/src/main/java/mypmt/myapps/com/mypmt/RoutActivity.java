@@ -1,11 +1,11 @@
 package mypmt.myapps.com.mypmt;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import mypmt.myapps.com.adapters.ViewPagerAdapter;
+import mypmt.myapps.com.customs.views.SlidingTabLayout;
 import mypmt.myapps.com.models.JsonRouteInfoParser;
 import mypmt.myapps.com.models.RouteInfoComplete;
 
@@ -28,25 +30,43 @@ public class RoutActivity extends ActionBarActivity {
     JsonRouteInfoParser jsonRouteInfoParser;
     TableLayout route_timing_container;
     FragmentManager fragmentManager;
-
-
-
+    ViewPagerAdapter viewPagerAdapter;
+    ViewPager viewPager;
+    SlidingTabLayout slidingTabLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rout);
+        CharSequence titles[] = {"STOPS", "TIMINGS"};
         FromText = (TextView) findViewById(R.id.route_from_txt);
         ToText = (TextView) findViewById(R.id.route_to_txt);
         viaText = (TextView) findViewById(R.id.route_via_txt);
         route_Bus_icon = (ImageView) findViewById(R.id.rout_image);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         // stopListview = (ListView) findViewById(R.id.rout_listview);
         //route_timing_container = (TableLayout) findViewById(R.id.route_timings_container);
         jsonRouteInfoParser = new JsonRouteInfoParser(null);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), titles, titles.length);
+        viewPager.setAdapter(viewPagerAdapter);
+        slidingTabLayout = (SlidingTabLayout)findViewById(R.id.slidingtablayout);
+        slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.sliding_strip_color);
+            }
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1)
-            new LoadRouteInfoTask().execute(null);
-        else
-            new LoadRouteInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            @Override
+            public int getDividerColor(int position) {
+                return Color.WHITE;
+            }
+        });
+
+        slidingTabLayout.setViewPager(viewPager);
+
+       /// if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1)
+          //  new LoadRouteInfoTask().execute(null);
+       // else
+           // new LoadRouteInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
 

@@ -7,4 +7,5 @@
     <color name="twtr">#00aced</color>
     <color name="progress_secondary">#8A0000</color>
     <color name="black_overlay">#66000000</color>
+    <color name="sliding_strip_color">#FFBB8507</color>
 </resources>

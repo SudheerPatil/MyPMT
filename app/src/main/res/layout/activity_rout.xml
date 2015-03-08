@@ -108,9 +108,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             class="mypmt.myapps.com.customs.views.SlidingTabLayout"
-            android:id="@+id/view2"
+            android:id="@+id/slidingtablayout"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="10" />
+            android:layout_weight="10"
+            android:background="@color/PMT_DARK_RIBBN"
+            />
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
