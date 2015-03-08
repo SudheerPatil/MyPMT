@@ -1,18 +1,18 @@
 package mypmt.myapps.com.mypmt;
 
-import android.graphics.Color;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.List;
@@ -27,7 +27,10 @@ public class RoutActivity extends ActionBarActivity {
     ImageView route_Bus_icon;
     JsonRouteInfoParser jsonRouteInfoParser;
     TableLayout route_timing_container;
+    FragmentManager fragmentManager;
 
+
+    )
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +39,14 @@ public class RoutActivity extends ActionBarActivity {
         ToText = (TextView) findViewById(R.id.route_to_txt);
         viaText = (TextView) findViewById(R.id.route_via_txt);
         route_Bus_icon = (ImageView) findViewById(R.id.rout_image);
-        stopListview = (ListView) findViewById(R.id.rout_listview);
+        // stopListview = (ListView) findViewById(R.id.rout_listview);
         //route_timing_container = (TableLayout) findViewById(R.id.route_timings_container);
         jsonRouteInfoParser = new JsonRouteInfoParser(null);
-        new LoadRouteInfoTask().execute(null);
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1)
+            new LoadRouteInfoTask().execute(null);
+        else
+            new LoadRouteInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
 
@@ -133,7 +140,6 @@ public class RoutActivity extends ActionBarActivity {
                     }
 
                 }*/
-
 
 
             }
