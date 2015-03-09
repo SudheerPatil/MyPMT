@@ -1,5 +1,4 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,17 +8,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="100">
+        android:orientation="vertical">
 
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="left|top"
-            android:layout_weight="20"
-            android:background="@color/PMT_DARK_RIBBN"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
 
+            android:background="@color/PMT_DARK_RIBBN"
             android:orientation="horizontal"
             android:padding="8dp">
 
@@ -29,9 +26,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center_vertical"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:layout_marginLeft="8dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+
                 android:src="@drawable/bus" />
 
 
@@ -40,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="100"
-                android:layout_marginLeft="0dp"
+
                 android:layout_gravity="center_vertical">
 
                 <TextView
@@ -65,8 +62,8 @@
                     android:background="@drawable/bi_dir"
                     android:layout_weight="20"
 
-                    android:text="via chinchwad station "
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:text="via Chinchwad station circle" />
 
 
                 <TextView
@@ -83,24 +80,6 @@
                     android:gravity="center" />
             </LinearLayout>
 
-            <!--<ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/scrollView">
-
-                <TableLayout
-                    android:id="@+id/route_timings_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="horizontal"
-
-                    android:padding="8dp">
-
-
-                </TableLayout>
-            </ScrollView>-->
-
 
         </LinearLayout>
 
@@ -109,16 +88,16 @@
             android:layout_height="wrap_content"
             class="mypmt.myapps.com.customs.views.SlidingTabLayout"
             android:id="@+id/slidingtablayout"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="10"
+            android:layout_gravity="center|bottom"
             android:background="@color/PMT_DARK_RIBBN"
-            />
+            android:fillViewport="false" />
+
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="0px"
-            android:layout_weight="70"
-            android:background="@android:color/white"/>
+            android:layout_height="wrap_content"
+
+            android:background="@android:color/white" />
         <!--<ListView
             android:id="@+id/rout_listview"
             android:layout_width="match_parent"

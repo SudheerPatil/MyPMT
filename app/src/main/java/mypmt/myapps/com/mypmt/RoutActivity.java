@@ -1,8 +1,6 @@
 package mypmt.myapps.com.mypmt;
 
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -33,6 +31,7 @@ public class RoutActivity extends ActionBarActivity {
     ViewPagerAdapter viewPagerAdapter;
     ViewPager viewPager;
     SlidingTabLayout slidingTabLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,30 +42,26 @@ public class RoutActivity extends ActionBarActivity {
         viaText = (TextView) findViewById(R.id.route_via_txt);
         route_Bus_icon = (ImageView) findViewById(R.id.rout_image);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        // stopListview = (ListView) findViewById(R.id.rout_listview);
-        //route_timing_container = (TableLayout) findViewById(R.id.route_timings_container);
+
         jsonRouteInfoParser = new JsonRouteInfoParser(null);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), titles, titles.length);
         viewPager.setAdapter(viewPagerAdapter);
-        slidingTabLayout = (SlidingTabLayout)findViewById(R.id.slidingtablayout);
+        slidingTabLayout = (SlidingTabLayout) findViewById(R.id.slidingtablayout);
+        slidingTabLayout.setDistributeEvenly(true);
         slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
                 return getResources().getColor(R.color.sliding_strip_color);
             }
 
-            @Override
-            public int getDividerColor(int position) {
-                return Color.WHITE;
-            }
         });
 
         slidingTabLayout.setViewPager(viewPager);
 
-       /// if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1)
-          //  new LoadRouteInfoTask().execute(null);
-       // else
-           // new LoadRouteInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        /*if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1)
+           new LoadRouteInfoTask().execute(null);
+        else
+            new LoadRouteInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);*/
 
     }
 
