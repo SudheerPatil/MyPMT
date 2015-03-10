@@ -28,10 +28,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            /*if (stopListfragment == null)
+            if (stopListfragment == null)
                 stopListfragment = new StopListfragment();
-            return stopListfragment;*/
-            StopListfragment.newInstance();
+            return stopListfragment;
         } else {
             if (timeListfragment == null)
                 timeListfragment = new TimeListfragment();
@@ -50,14 +49,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         return NumofTabs;
     }
 
-    public void setStopLists(List<String> stopLists) {
-        stopListfragment.setStopList(stopLists);
-        notifyDataSetChanged();
-    }
 
-    public void setTimeLists(List<String> timeLists) {
-        timeListfragment.setTimeList(timeLists);
-        notifyDataSetChanged();
-    }
+
+
 
 }

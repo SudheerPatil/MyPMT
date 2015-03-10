@@ -15,7 +15,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-
+            android:elevation="2dp"
             android:background="@color/PMT_DARK_RIBBN"
             android:orientation="horizontal"
             android:padding="8dp">
@@ -90,6 +90,7 @@
             android:id="@+id/slidingtablayout"
             android:layout_gravity="center|bottom"
             android:background="@color/PMT_DARK_RIBBN"
+            android:elevation="2dp"
             android:fillViewport="false" />
 
         <android.support.v4.view.ViewPager

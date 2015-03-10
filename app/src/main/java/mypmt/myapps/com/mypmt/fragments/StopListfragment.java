@@ -3,6 +3,7 @@ package mypmt.myapps.com.mypmt.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,28 +20,35 @@ import mypmt.myapps.com.mypmt.R;
  */
 public class StopListfragment extends ListFragment {
     List<String> stopList;
+    ListAdapter listAdapter;
 
-/*
-    public static StopListfragment newInstance(String title){}
-*/
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        stopList = new ArrayList<String>();
         View view = inflater.inflate(R.layout.stop_list_fragment_layout, container, false);
         return view;
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        stopList = new ArrayList<String>();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ListAdapter listAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, stopList);
 
     }
 
     public void setStopList(List<String> stopList) {
-        this.stopList = stopList;
+        this.stopList.addAll(stopList);
+        listAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, stopList);
+        setListAdapter(listAdapter);
+        Log.i("No of items newly inserted:", String.valueOf(listAdapter.getCount()));
+
     }
-    public ListAdapter getAdapter(){
+
+    public ListAdapter getAdapter() {
         return this.getListAdapter();
     }
 }

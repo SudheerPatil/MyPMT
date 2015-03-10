@@ -4,7 +4,7 @@
     android:shape="rectangle">
 
     <!-- view background color -->
-    <solid android:color="@color/twtr"></solid>
+    <solid android:color="@color/material_blue_500"></solid>
 
     <!-- view border color and width -->
     <!--<stroke

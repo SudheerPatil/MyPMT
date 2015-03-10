@@ -18,6 +18,8 @@ import mypmt.myapps.com.adapters.ViewPagerAdapter;
 import mypmt.myapps.com.customs.views.SlidingTabLayout;
 import mypmt.myapps.com.models.JsonRouteInfoParser;
 import mypmt.myapps.com.models.RouteInfoComplete;
+import mypmt.myapps.com.mypmt.fragments.StopListfragment;
+import mypmt.myapps.com.mypmt.fragments.TimeListfragment;
 
 
 public class RoutActivity extends ActionBarActivity {
@@ -115,15 +117,19 @@ public class RoutActivity extends ActionBarActivity {
                 if (routeInfoComplete.getVia_str0() != null)
                     viaText.setText(routeInfoComplete.getVia_str0());
                 if (routeInfoComplete.getStop_List1() != null) {
-                    viewPagerAdapter.setStopLists(routeInfoComplete.getStop_List1());
+                    StopListfragment stopListfragment = (StopListfragment)viewPagerAdapter.getItem(0);//getStopListFragment
+                    stopListfragment.setStopList(routeInfoComplete.getStop_List1());
+                    viewPagerAdapter.notifyDataSetChanged();
                 }
                 if (routeInfoComplete.getTimings1() != null) {
                     List<String> timeL1 = routeInfoComplete.getTimings0();
-                    viewPagerAdapter.setTimeLists(timeL1);
+                    TimeListfragment timeListFragment=(TimeListfragment)viewPagerAdapter.getItem(1);
+                    timeListFragment.setTimeList(timeL1);
                 }
                 if (routeInfoComplete.getTimings0() != null) {
                     List<String> timeL0 = routeInfoComplete.getTimings0();
-                    viewPagerAdapter.setTimeLists(timeL0);
+                    TimeListfragment timeListFragment=(TimeListfragment)viewPagerAdapter.getItem(1);
+                    timeListFragment.setTimeList(timeL0);
 
 
                 }
