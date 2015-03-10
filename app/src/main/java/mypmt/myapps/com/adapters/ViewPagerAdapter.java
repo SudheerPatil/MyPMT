@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.util.List;
+
+import mypmt.myapps.com.loaders.StopListLoader;
 import mypmt.myapps.com.mypmt.fragments.StopListfragment;
 import mypmt.myapps.com.mypmt.fragments.TimeListfragment;
 
@@ -13,6 +16,8 @@ import mypmt.myapps.com.mypmt.fragments.TimeListfragment;
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     CharSequence[] titles;
     int NumofTabs;
+    StopListfragment stopListfragment;
+    TimeListfragment timeListfragment;
 
     public ViewPagerAdapter(FragmentManager fm, CharSequence[] titles, int NumofTabs) {
         super(fm);
@@ -23,10 +28,13 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            StopListfragment stopListfragment = new StopListfragment();
-            return stopListfragment;
+            /*if (stopListfragment == null)
+                stopListfragment = new StopListfragment();
+            return stopListfragment;*/
+            StopListfragment.newInstance();
         } else {
-            TimeListfragment timeListfragment = new TimeListfragment();
+            if (timeListfragment == null)
+                timeListfragment = new TimeListfragment();
             return timeListfragment;
         }
 
@@ -41,4 +49,15 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return NumofTabs;
     }
+
+    public void setStopLists(List<String> stopLists) {
+        stopListfragment.setStopList(stopLists);
+        notifyDataSetChanged();
+    }
+
+    public void setTimeLists(List<String> timeLists) {
+        timeListfragment.setTimeList(timeLists);
+        notifyDataSetChanged();
+    }
+
 }

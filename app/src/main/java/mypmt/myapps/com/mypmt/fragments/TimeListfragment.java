@@ -7,15 +7,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mypmt.myapps.com.mypmt.R;
 
 /**
  * Created by Sudheer on 08-03-2015.
  */
 public class TimeListfragment extends Fragment {
+    List<String> timeList;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.time_list_fragment_layout,container,false);
+        timeList= new ArrayList<String>();
         return  view;
+    }
+
+    public void setTimeList(List<String> timeLists) {
+        timeList = timeLists;
     }
 }

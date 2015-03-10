@@ -1,6 +1,7 @@
 package mypmt.myapps.com.mypmt;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -9,8 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -22,11 +21,9 @@ import mypmt.myapps.com.models.RouteInfoComplete;
 
 
 public class RoutActivity extends ActionBarActivity {
-    ListView stopListview;
     TextView FromText, ToText, viaText;
     ImageView route_Bus_icon;
     JsonRouteInfoParser jsonRouteInfoParser;
-    TableLayout route_timing_container;
     FragmentManager fragmentManager;
     ViewPagerAdapter viewPagerAdapter;
     ViewPager viewPager;
@@ -48,6 +45,7 @@ public class RoutActivity extends ActionBarActivity {
         viewPager.setAdapter(viewPagerAdapter);
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.slidingtablayout);
         slidingTabLayout.setDistributeEvenly(true);
+
         slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
@@ -58,10 +56,10 @@ public class RoutActivity extends ActionBarActivity {
 
         slidingTabLayout.setViewPager(viewPager);
 
-        /*if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1)
-           new LoadRouteInfoTask().execute(null);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1)
+            new LoadRouteInfoTask().execute(null);
         else
-            new LoadRouteInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);*/
+            new LoadRouteInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
 
@@ -116,45 +114,19 @@ public class RoutActivity extends ActionBarActivity {
                 }
                 if (routeInfoComplete.getVia_str0() != null)
                     viaText.setText(routeInfoComplete.getVia_str0());
+                if (routeInfoComplete.getStop_List1() != null) {
+                    viewPagerAdapter.setStopLists(routeInfoComplete.getStop_List1());
+                }
                 if (routeInfoComplete.getTimings1() != null) {
                     List<String> timeL1 = routeInfoComplete.getTimings0();
+                    viewPagerAdapter.setTimeLists(timeL1);
                 }
-               /* if (routeInfoComplete.getTimings0() != null) {
+                if (routeInfoComplete.getTimings0() != null) {
                     List<String> timeL0 = routeInfoComplete.getTimings0();
-                    int size = timeL0.size();
-
-                    int counter = 0;
-                    for (int i = 0; i < size / 10; i++) {
-                        TableRow tableRow = new TableRow(getApplicationContext());
-                        TableLayout.LayoutParams tableRowParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
-
-                        int leftMargin = 10;
-                        int topMargin = 2;
-                        int rightMargin = 10;
-                        int bottomMargin = 2;
-
-                        tableRowParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
-
-                        tableRow.setLayoutParams(tableRowParams);
-                        do {
-                            TextView textView = new TextView(getApplicationContext());
+                    viewPagerAdapter.setTimeLists(timeL0);
 
 
-                            textView.setBackgroundResource(R.drawable.rounded_corner);
-                            textView.setTextColor(Color.WHITE);
-                            textView.setText(timeL0.get(counter));
-                           *//* LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                            params.setMargins(1, 1, 1, 1);
-
-                            textView.setLayoutParams(params);*//*
-                            tableRow.addView(textView);
-                            counter++;
-                        } while (counter <= size && counter % 10 != 0);
-                        route_timing_container.addView(tableRow);
-
-                    }
-
-                }*/
+                }
 
 
             }
