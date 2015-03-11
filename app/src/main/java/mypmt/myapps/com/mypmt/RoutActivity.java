@@ -9,8 +9,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.List;
 
@@ -23,6 +27,7 @@ import mypmt.myapps.com.mypmt.fragments.TimeListfragment;
 
 
 public class RoutActivity extends ActionBarActivity {
+    private static boolean FORWORD = true;
     TextView FromText, ToText, viaText;
     ImageView route_Bus_icon;
     JsonRouteInfoParser jsonRouteInfoParser;
@@ -30,6 +35,8 @@ public class RoutActivity extends ActionBarActivity {
     ViewPagerAdapter viewPagerAdapter;
     ViewPager viewPager;
     SlidingTabLayout slidingTabLayout;
+    FloatingActionButton fab;
+    RouteInfoComplete routeInfoComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,7 @@ public class RoutActivity extends ActionBarActivity {
         viaText = (TextView) findViewById(R.id.route_via_txt);
         route_Bus_icon = (ImageView) findViewById(R.id.rout_image);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        fab = (FloatingActionButton) findViewById(R.id.swipe_btn);
 
         jsonRouteInfoParser = new JsonRouteInfoParser(null);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), titles, titles.length);
@@ -63,6 +71,35 @@ public class RoutActivity extends ActionBarActivity {
         else
             new LoadRouteInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplication(), "Swiped Locations!", Toast.LENGTH_SHORT).show();
+                SwipeData();
+            }
+        });
+
+    }
+
+    private void SwipeData() {
+        CharSequence tempString = "";
+        tempString = FromText.getText();
+        FromText.setText(ToText.getText());
+        ToText.setText(tempString);
+        if (routeInfoComplete.getStop_List1() != null) {
+            StopListfragment stopListfragment = (StopListfragment) viewPagerAdapter.getItem(0);//getStopListFragment
+            TimeListfragment timeListfragment =(TimeListfragment)viewPagerAdapter.getItem(1);
+            if (!FORWORD) { viewPagerAdapter.getItem(0);
+                stopListfragment.setStopList(routeInfoComplete.getStop_List1());
+                timeListfragment.setTimeList(routeInfoComplete.getTimings1());
+                FORWORD=false;
+            } else {
+                stopListfragment.setStopList(routeInfoComplete.getStop_List0());
+                timeListfragment.setTimeList(routeInfoComplete.getTimings0());
+                FORWORD=true;
+            }
+            viewPagerAdapter.notifyDataSetChanged();
+        }
     }
 
 
@@ -97,13 +134,14 @@ public class RoutActivity extends ActionBarActivity {
         @Override
         protected Object doInBackground(Object[] params) {
             jsonRouteInfoParser.ParseJsonFile(jsonRouteInfoParser);
+            routeInfoComplete = jsonRouteInfoParser.getRouteInfoComplete();
             return null;
         }
 
         @Override
         protected void onPostExecute(Object o) {
             //All initialization task will be done here!
-            RouteInfoComplete routeInfoComplete = jsonRouteInfoParser.getRouteInfoComplete();
+
             if (routeInfoComplete == null)
                 Log.i("Status:", "No information about Route available!");
             else {
@@ -116,22 +154,25 @@ public class RoutActivity extends ActionBarActivity {
                 }
                 if (routeInfoComplete.getVia_str0() != null)
                     viaText.setText(routeInfoComplete.getVia_str0());
-                if (routeInfoComplete.getStop_List1() != null) {
-                    StopListfragment stopListfragment = (StopListfragment)viewPagerAdapter.getItem(0);//getStopListFragment
+                /*if (routeInfoComplete.getStop_List1() != null) {
+                    StopListfragment stopListfragment = (StopListfragment) viewPagerAdapter.getItem(0);//getStopListFragment
                     stopListfragment.setStopList(routeInfoComplete.getStop_List1());
                     viewPagerAdapter.notifyDataSetChanged();
-                }
+                }*/
                 if (routeInfoComplete.getTimings1() != null) {
                     List<String> timeL1 = routeInfoComplete.getTimings0();
-                    TimeListfragment timeListFragment=(TimeListfragment)viewPagerAdapter.getItem(1);
+                    TimeListfragment timeListFragment = (TimeListfragment) viewPagerAdapter.getItem(1);
                     timeListFragment.setTimeList(timeL1);
                 }
                 if (routeInfoComplete.getTimings0() != null) {
                     List<String> timeL0 = routeInfoComplete.getTimings0();
-                    TimeListfragment timeListFragment=(TimeListfragment)viewPagerAdapter.getItem(1);
+                    TimeListfragment timeListFragment = (TimeListfragment) viewPagerAdapter.getItem(1);
                     timeListFragment.setTimeList(timeL0);
-
-
+                }
+                if (routeInfoComplete.getStop_List0() != null) {
+                    StopListfragment stopListfragment = (StopListfragment) viewPagerAdapter.getItem(0);//getStopListFragment
+                    stopListfragment.setStopList(routeInfoComplete.getStop_List0());
+                    viewPagerAdapter.notifyDataSetChanged();
                 }
 
 

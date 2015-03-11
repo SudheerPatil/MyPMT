@@ -41,11 +41,17 @@ public class StopListfragment extends ListFragment {
     }
 
     public void setStopList(List<String> stopList) {
+        if(this.stopList!=null)
+            this.stopList.clear();
         this.stopList.addAll(stopList);
-        listAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, stopList);
+        listAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, this.stopList);
         setListAdapter(listAdapter);
         Log.i("No of items newly inserted:", String.valueOf(listAdapter.getCount()));
 
+    }
+    public List<String> getStopList(){
+
+        return this.stopList;
     }
 
     public ListAdapter getAdapter() {

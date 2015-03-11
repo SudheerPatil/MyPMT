@@ -1,8 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="mypmt.myapps.com.mypmt.RoutActivity">
 
     <LinearLayout
@@ -83,10 +83,9 @@
 
         </LinearLayout>
 
-        <view
+        <mypmt.myapps.com.customs.views.SlidingTabLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            class="mypmt.myapps.com.customs.views.SlidingTabLayout"
             android:id="@+id/slidingtablayout"
             android:layout_gravity="center|bottom"
             android:background="@color/PMT_DARK_RIBBN"
@@ -99,6 +98,8 @@
             android:layout_height="wrap_content"
 
             android:background="@android:color/white" />
+
+
         <!--<ListView
             android:id="@+id/rout_listview"
             android:layout_width="match_parent"
@@ -108,15 +109,15 @@
 
     </LinearLayout>
 
-    <!--<view
-        android:id="@+id/view"
-        class="com.melnykov.fab.FloatingActionButton"
+
+    <com.melnykov.fab.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
+        android:id="@+id/swipe_btn"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_arrow_repeat"
-        app:fab_colorNormal="@color/PMT_DARK_RIBBN"
-        app:fab_colorPressed="@color/PMT_RIBBN" />-->
+        fab:fab_colorNormal="@color/SwipeNormal"
+        fab:fab_colorPressed="@color/SwipePressed"
+        android:src="@drawable/ic_arrow_repeat_horz"
+        android:layout_gravity="center_horizontal|bottom" />
 
 </FrameLayout>

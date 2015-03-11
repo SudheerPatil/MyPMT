@@ -45,6 +45,7 @@ public class JsonRouteInfoParser {
     public void ParseJsonFile(JsonRouteInfoParser jsonRouteInfoParser) {
         File Rootdir = Environment.getExternalStorageDirectory();
         if (Rootdir != null) {
+            //for now just parsing r326.json file
             jsonRouteInfoParser.mFile = new File(Rootdir.getPath() + "/" + GlobalData.APP_FOLDER + "/" + GlobalData.Temp_file);
             if (!jsonRouteInfoParser.mFile.exists()) {
                 return;
@@ -62,33 +63,38 @@ public class JsonRouteInfoParser {
                         String Route_Name = main_entry.getKey().toString();
                         String Route_num = Route_Name.substring(Route_Name.indexOf("Route"), Route_Name.indexOf(":"));
                         if(Route_Name.contains("via "))
-                        this.routeInfoComplete.setVia_str0(Route_Name.substring(Route_Name.indexOf("via ")+4));
-                        this.routeInfoComplete.setHead_title(Route_Name.replace(Route_num+":",""));
-                        this.routeInfoComplete.setRoute_num(Route_num);
+                        this.routeInfoComplete.setVia_str0(Route_Name.substring(Route_Name.indexOf("via ")+4));//setting via string
+                        this.routeInfoComplete.setHead_title(Route_Name.replace(Route_num+":",""));            // setting title of route
+                        this.routeInfoComplete.setRoute_num(Route_num);                                        // setting route number
 
                         JSONArray array = (JSONArray) main_entry.getValue();//jsonObject.get(iterator.next());
-                        System.out.println("Array size:" + array.size());
+                        //System.out.println("Array size:" + array.size());
                         //System.out.println(array.toString());
                         JSONObject jsonObject0 = (JSONObject) array.get(0);
                         Iterator iterator0_1 = jsonObject0.entrySet().iterator();
 
-                        JSONArray TripTime0 = (JSONArray) jsonObject0.get("TripTime");
+                        JSONArray TripTime1 = (JSONArray) jsonObject0.get("TripTime");
 
-                        this.routeInfoComplete.setTimings0(toList(TripTime0));
+                        this.routeInfoComplete.setTimings1(toList(TripTime1));                              //Setting forword direction timings
                         jsonObject0.remove("TripTime");
-                        Set<JSONObject> set0 = jsonObject0.keySet();
-                        Iterator<JSONObject> iterator0 = set0.iterator();
-
-                        JSONObject jsonObject1 = (JSONObject) array.get(1);
-                        JSONArray TripTime1 = (JSONArray) jsonObject1.get("TripTime");
-                        this.routeInfoComplete.setTimings1(toList(TripTime1));
-                        jsonObject1.remove("TripTime");
-                        Set<JSONObject> set1 = jsonObject1.entrySet();
+                        Set<JSONObject> set1 = jsonObject0.entrySet();
                         Iterator<JSONObject> iterator1 = set1.iterator();
                         while (iterator1.hasNext()) {
                             Map.Entry entry = (Map.Entry) iterator1.next();
                             JSONArray Stops1 = (JSONArray) entry.getValue();
                             this.routeInfoComplete.setStop_List1(toList(Stops1));
+                        }
+
+                        JSONObject jsonObject1 = (JSONObject) array.get(1);
+                        JSONArray TripTime0 = (JSONArray) jsonObject1.get("TripTime");
+                        this.routeInfoComplete.setTimings0(toList(TripTime0));
+                        jsonObject1.remove("TripTime");
+                        Set<JSONObject> set0 = jsonObject1.entrySet();
+                        Iterator<JSONObject> iterator0 = set0.iterator();
+                        while (iterator0.hasNext()) {
+                            Map.Entry entry = (Map.Entry) iterator0.next();
+                            JSONArray Stops0 = (JSONArray) entry.getValue();
+                            this.routeInfoComplete.setStop_List0(toList(Stops0));
                         }
 
                     }
