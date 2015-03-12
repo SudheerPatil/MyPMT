@@ -69,6 +69,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         swipe_btn.setOnClickListener(this);
 //        new LoadStopsTask().execute("");
         getSupportLoaderManager().initLoader(STOP_LIST_LOADER_ID, null, this);
+
     }
 
 
@@ -193,7 +194,9 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
             fromTextView.setText(toTextView.getText());
             toTextView.setText(temp);
         }
-
+        JsonRouteListParser jsonRouteListParser= new JsonRouteListParser("");
+        jsonRouteListParser.ParseJsonFile();
+        jsonRouteListParser.getRoute_list();
     }
 
 
@@ -218,9 +221,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         }
     }
     private List<RouteInfo>getMatchedPair(CharSequence from,CharSequence to){
-        JsonRouteListParser jsonRouteListParser= new JsonRouteListParser("");
-        jsonRouteListParser.ParseJsonFile();
-        jsonRouteListParser.getRoute_list();
+
         return null;
     }
 }

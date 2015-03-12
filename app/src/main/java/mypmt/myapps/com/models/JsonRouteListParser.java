@@ -70,21 +70,28 @@ public class JsonRouteListParser {
 
                         System.out.print(" " + jsonObject1.get("rout"));
                         System.out.print(" " + jsonObject1.get("lnk"));
-                        this.route_list.add(new RouteInfo(itrator.next().toString(),
-                                                           jsonObject1.get("rout").toString(),
-                                                           null));
+                        String[] from_to_array = jsonObject1.get("rout").toString().split(" to ");
+                        System.out.println(from_to_array);
+
+                        if (from_to_array[1].contains(" via ")) {
+                            String toStringReal = from_to_array[1].replace(from_to_array[1].subSequence(from_to_array[1].indexOf("via "), from_to_array[1].length()), "");
+                            this.route_list.add(new RouteInfo(itrator.next().toString(), from_to_array[0], toStringReal));
+                        } else
+                            this.route_list.add(new RouteInfo(itrator.next().toString(), from_to_array[0], from_to_array[1]));
+                        //(route number, from_string,to_string)
+
                     }
 
-                        // Collections.sort(this.route_list);
-                        //System.out.println(this.route_list.toString());
-                    }catch(FileNotFoundException e){
-                        e.printStackTrace();
-                    }catch(ParseException e){
-                        e.printStackTrace();
-                    }catch(IOException e){
-                        e.printStackTrace();
-                    }
+                    // Collections.sort(this.route_list);
+                    //System.out.println(this.route_list.toString());
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
     }
+}
