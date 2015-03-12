@@ -6,6 +6,9 @@ import android.os.Environment;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,10 +25,11 @@ import mypmt.myapps.com.adapters.RouteLabelAdapter;
 import mypmt.myapps.com.customs.views.CustomAutoComplete;
 import mypmt.myapps.com.loaders.RouteListLoader;
 import mypmt.myapps.com.loaders.StopListLoader;
+import mypmt.myapps.com.models.JsonRouteListParser;
 import mypmt.myapps.com.models.RouteInfo;
 
 
-public class SearchActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, android.support.v4.app.LoaderManager.LoaderCallbacks, View.OnClickListener {
+public class SearchActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, android.support.v4.app.LoaderManager.LoaderCallbacks, View.OnClickListener, TextWatcher {
     AutoCompleteTextView fromTextView, toTextView;
     CustomAutoComplete Rout_NumTextView;
     private ArrayAdapter<String> stops_adapter;
@@ -56,8 +60,8 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         toTextView.setAdapter(stops_adapter);
 
         Rout_NumTextView.setAdapter(route_adapter);
-        /*fromTextView.addTextChangedListener(this);
-        toTextView.addTextChangedListener(this);*/
+        fromTextView.addTextChangedListener(this);
+        toTextView.addTextChangedListener(this);
         fromTextView.setOnItemClickListener(this);
         toTextView.setOnItemClickListener(this);
         Rout_NumTextView.setOnItemClickListener(this);
@@ -193,4 +197,30 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
     }
 
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        if (!TextUtils.isEmpty(fromTextView.getText()) &&
+                !TextUtils.isEmpty(fromTextView.getText())) {
+        Log.i("AutoComplter textview Status :","Not Empty");
+            CharSequence from=fromTextView.getText();
+            CharSequence to =toTextView.getText();
+            getMatchedPair( from, to);
+        }
+    }
+    private List<RouteInfo>getMatchedPair(CharSequence from,CharSequence to){
+        JsonRouteListParser jsonRouteListParser= new JsonRouteListParser("");
+        jsonRouteListParser.ParseJsonFile();
+        jsonRouteListParser.getRoute_list();
+        return null;
+    }
 }

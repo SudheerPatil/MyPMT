@@ -36,7 +36,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:background="@android:color/background_light"
-                android:hint="From"
+                android:hint="From stop"
                 android:padding="8dp"
                 android:translationZ="4dp" />
 
@@ -83,7 +83,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:background="@android:color/background_light"
-                android:hint="Too"
+                android:hint="To stop"
                 android:padding="8dp"
                 android:translationZ="4dp" />
         </LinearLayout>
@@ -99,7 +99,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/route_listview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayout"

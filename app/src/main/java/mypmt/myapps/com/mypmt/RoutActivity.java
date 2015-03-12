@@ -27,7 +27,7 @@ import mypmt.myapps.com.mypmt.fragments.TimeListfragment;
 
 
 public class RoutActivity extends ActionBarActivity {
-    private static boolean FORWORD = true;
+    private static boolean FORWORD;
     TextView FromText, ToText, viaText;
     ImageView route_Bus_icon;
     JsonRouteInfoParser jsonRouteInfoParser;
@@ -89,14 +89,14 @@ public class RoutActivity extends ActionBarActivity {
         if (routeInfoComplete.getStop_List1() != null) {
             StopListfragment stopListfragment = (StopListfragment) viewPagerAdapter.getItem(0);//getStopListFragment
             TimeListfragment timeListfragment =(TimeListfragment)viewPagerAdapter.getItem(1);
-            if (!FORWORD) { viewPagerAdapter.getItem(0);
+            if (!FORWORD) { //viewPagerAdapter.getItem(0);
                 stopListfragment.setStopList(routeInfoComplete.getStop_List1());
                 timeListfragment.setTimeList(routeInfoComplete.getTimings1());
-                FORWORD=false;
+                FORWORD=true;
             } else {
                 stopListfragment.setStopList(routeInfoComplete.getStop_List0());
                 timeListfragment.setTimeList(routeInfoComplete.getTimings0());
-                FORWORD=true;
+                FORWORD=false;
             }
             viewPagerAdapter.notifyDataSetChanged();
         }

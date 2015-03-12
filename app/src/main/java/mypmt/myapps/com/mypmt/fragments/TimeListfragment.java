@@ -32,7 +32,14 @@ public class TimeListfragment extends Fragment {
 
     public void setTimeList(List<String> timeLists) {
         if (this.timeList != null)
+        {
+            if(flowlayout.getChildCount()<=this.timeList.size())
+            {
+                flowlayout.removeAllViewsInLayout();
+            }
             this.timeList.clear();
+
+        }
         this.timeList.addAll(timeLists);
         if (!this.timeList.isEmpty()) {
             for (String timeString : this.timeList) {

@@ -20,7 +20,7 @@ import mypmt.myapps.com.mypmt.R;
  */
 public class StopListfragment extends ListFragment {
     List<String> stopList;
-    ListAdapter listAdapter;
+    ArrayAdapter listAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class StopListfragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         stopList = new ArrayList<String>();
+
     }
 
     @Override
@@ -46,7 +47,9 @@ public class StopListfragment extends ListFragment {
         this.stopList.addAll(stopList);
         listAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, this.stopList);
         setListAdapter(listAdapter);
+        listAdapter.notifyDataSetChanged();
         Log.i("No of items newly inserted:", String.valueOf(listAdapter.getCount()));
+
 
     }
     public List<String> getStopList(){
