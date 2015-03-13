@@ -140,6 +140,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
             return new StopListLoader(this);
         else
             return new RouteListLoader(this);
+
     }
 
     @Override
