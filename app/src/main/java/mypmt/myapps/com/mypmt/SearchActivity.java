@@ -59,7 +59,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         route_listview = (ListView) findViewById(R.id.route_listview);
         sList = new ArrayList<String>();
         rList = new ArrayList<RouteInfo>();
-        searchList =new ArrayList<RouteInfo>();
+        searchList = new ArrayList<RouteInfo>();
         stops_adapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.autoc_label, sList);
         route_adapter = new RouteLabelAdapter(SearchActivity.this, rList);
 
@@ -77,7 +77,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 //        new LoadStopsTask().execute("");
         getSupportLoaderManager().initLoader(STOP_LIST_LOADER_ID, null, this);
 
-        routeInfoAdapter = new RouteInfoAdapter(this,searchList);
+        routeInfoAdapter = new RouteInfoAdapter(this, searchList);
         route_listview.setAdapter(routeInfoAdapter);
     }
 
@@ -140,7 +140,6 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
             return new StopListLoader(this);
         else
             return new RouteListLoader(this);
-
     }
 
     @Override
@@ -237,12 +236,15 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
     private void SearchLists(CharSequence from, CharSequence to) {
         if (jsonRouteListParser == null) {
             JsonRouteListParser jsonRouteListParser = new JsonRouteListParser("");
+            jsonRouteListParser.ParseJsonFile();
+            if(!TextUtils.isEmpty(from) && !TextUtils.isEmpty(to))
+                new updateListTask().execute(jsonRouteListParser.getRoute_list());
         }
 
-        new updateListTask().execute(jsonRouteListParser.getRoute_list());
 
-        jsonRouteListParser.ParseJsonFile();
-        jsonRouteListParser.getRoute_list();
+
+
+
 
     }
 
@@ -250,22 +252,22 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         String fromText;
         String toText;
         List<RouteInfo> PublishinList;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             fromText = fromTextView.getText().toString();
             toText = toTextView.getText().toString();
-            PublishinList=new ArrayList<RouteInfo>();
+            PublishinList = new ArrayList<RouteInfo>();
         }
 
         @Override
         protected Void doInBackground(List<RouteInfo>... params) {
-            RouteInfo tempinfo = new RouteInfo(null,fromText,toText);
+            RouteInfo tempinfo = new RouteInfo(null, fromText, toText);
             if (params[0] != null) {
                 List<RouteInfo> routeInfosbkList = params[0];
                 for (RouteInfo r : routeInfosbkList) {
-                    if(r.equals(tempinfo))
-                    {
+                    if (r.equals(tempinfo)) {
                         PublishinList.add(r);
                     }
                 }
@@ -276,11 +278,11 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            if(route_listview!=null){
-                if(PublishinList.size()>0){
-                   routeInfoAdapter.setSearchList(PublishinList);
+            if (route_listview != null) {
+                if (PublishinList.size() > 0) {
+                    routeInfoAdapter.setSearchList(PublishinList);
                 }
-             //set thiis publishing result adapter of listview
+                //set thiis publishing result adapter of listview
             }
 
         }

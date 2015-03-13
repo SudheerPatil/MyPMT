@@ -65,8 +65,14 @@ public class RouteInfo {
 
         RouteInfo routeInfo = (RouteInfo) o;
 
-        if (!from_str.equals(routeInfo.from_str)) return false;
-        if (!to_str.equals(routeInfo.to_str)) return false;
+        if (!from_str.contains(routeInfo.from_str)) return false;
+        if (!to_str.contains(routeInfo.to_str)) return false;
+
+        if(from_str.toLowerCase().contains(routeInfo.from_str.toLowerCase())) return true;
+        if(to_str.toLowerCase().contains(routeInfo.to_str.toLowerCase())) return true;
+
+        if(from_str.toLowerCase().contains(routeInfo.to_str.toLowerCase())) return true;
+        if(to_str.toLowerCase().contains(routeInfo.from_str.toLowerCase())) return true;
 
         return true;
     }

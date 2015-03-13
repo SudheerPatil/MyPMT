@@ -59,6 +59,16 @@ public class RouteInfoAdapter extends BaseAdapter {
 
         } else
             holder = (ViewHolder) convertView.getTag();
+        if(infoList.size()>0)
+        {
+            RouteInfo temp_info =infoList.get(position);
+            holder.routnumtextview.setText(temp_info.getRoute_num());
+            holder.fromtextview.setText(temp_info.getFrom_str());
+            holder.totextview.setText(temp_info.getTo_str());
+            holder.viatextview.setText(temp_info.getVia_str());
+        }
+
+
         return convertView;
     }
 
