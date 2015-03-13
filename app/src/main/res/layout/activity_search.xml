@@ -37,6 +37,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@android:color/background_light"
                 android:hint="From stop"
+                android:lines="1"
                 android:padding="8dp"
                 android:translationZ="4dp" />
 
@@ -52,6 +53,7 @@
                 android:completionThreshold="1"
                 android:hint="Enter Route Number"
                 android:padding="8dp"
+                android:lines="1"
                 android:text=""
                 android:translationZ="4dp"
                 android:visibility="gone" />
@@ -72,12 +74,10 @@
                 android:layout_gravity="center_horizontal" />-->
 
             <AutoCompleteTextView
-
                 android:id="@+id/toTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/autoCompleteTextView"
                 android:layout_marginBottom="8dp"

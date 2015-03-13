@@ -57,4 +57,24 @@ public class RouteInfo {
     public String toString() {
         return getRoute_num();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RouteInfo routeInfo = (RouteInfo) o;
+
+        if (!from_str.equals(routeInfo.from_str)) return false;
+        if (!to_str.equals(routeInfo.to_str)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = from_str.hashCode();
+        result = 31 * result + to_str.hashCode();
+        return result;
+    }
 }

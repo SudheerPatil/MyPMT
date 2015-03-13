@@ -1,5 +1,6 @@
 package mypmt.myapps.com.mypmt;
 
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,11 +17,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import mypmt.myapps.com.adapters.RouteInfoAdapter;
 import mypmt.myapps.com.adapters.RouteLabelAdapter;
 import mypmt.myapps.com.customs.views.CustomAutoComplete;
 import mypmt.myapps.com.loaders.RouteListLoader;
@@ -36,7 +38,11 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
     private RouteLabelAdapter route_adapter;
     ImageButton swipe_btn;
     List<String> sList;
+    JsonRouteListParser jsonRouteListParser;
     List<RouteInfo> rList;
+    ArrayList<RouteInfo> searchList;
+    ListView route_listview;
+    RouteInfoAdapter routeInfoAdapter;
     /*String[] route_list = {"Aaundh", "Baner", "Chinchwad", "Dapodi", "E-Square", "Fursungi", "Gangadham", "Hadpsar", "Ingale vasti",
             "Jam mil", "Kalewadi", "Narayan Peth", "Pimpale Gurav", "Pimple Nilakh", "Ram Nagar", "Shivajinagar", "Telco", "Urali-Kanchan", "Vadawane", "Wakad"};*/
     private static int STOP_LIST_LOADER_ID = 1;
@@ -50,9 +56,10 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         toTextView = (AutoCompleteTextView) findViewById(R.id.toTextView);
         Rout_NumTextView = (CustomAutoComplete) findViewById(R.id.Rout_NumTextView);
         swipe_btn = (ImageButton) findViewById(R.id.swipe_btn);
+        route_listview = (ListView) findViewById(R.id.route_listview);
         sList = new ArrayList<String>();
         rList = new ArrayList<RouteInfo>();
-
+        searchList =new ArrayList<RouteInfo>();
         stops_adapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.autoc_label, sList);
         route_adapter = new RouteLabelAdapter(SearchActivity.this, rList);
 
@@ -70,6 +77,8 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 //        new LoadStopsTask().execute("");
         getSupportLoaderManager().initLoader(STOP_LIST_LOADER_ID, null, this);
 
+        routeInfoAdapter = new RouteInfoAdapter(this,searchList);
+        route_listview.setAdapter(routeInfoAdapter);
     }
 
 
@@ -114,9 +123,14 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String item_selected = parent.getItemAtPosition(position).toString();
+        if (!TextUtils.isEmpty(fromTextView.getText()) &&
+                !TextUtils.isEmpty(fromTextView.getText())) {
+            Log.i("AutoComplte textview Status :", "Not Empty");
+            CharSequence from = fromTextView.getText();
+            CharSequence to = toTextView.getText();
+            SearchLists(from, to);
 
-        Toast.makeText(getApplication(), item_selected, Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -194,9 +208,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
             fromTextView.setText(toTextView.getText());
             toTextView.setText(temp);
         }
-        JsonRouteListParser jsonRouteListParser= new JsonRouteListParser("");
-        jsonRouteListParser.ParseJsonFile();
-        jsonRouteListParser.getRoute_list();
+
     }
 
 
@@ -214,14 +226,62 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
     public void afterTextChanged(Editable s) {
         if (!TextUtils.isEmpty(fromTextView.getText()) &&
                 !TextUtils.isEmpty(fromTextView.getText())) {
-        Log.i("AutoComplter textview Status :","Not Empty");
-            CharSequence from=fromTextView.getText();
-            CharSequence to =toTextView.getText();
-            getMatchedPair( from, to);
+            Log.i("AutoComplter textview Status :", "Not Empty");
+            CharSequence from = fromTextView.getText();
+            CharSequence to = toTextView.getText();
+
         }
     }
-    private List<RouteInfo>getMatchedPair(CharSequence from,CharSequence to){
 
-        return null;
+    private void SearchLists(CharSequence from, CharSequence to) {
+        if (jsonRouteListParser == null) {
+            JsonRouteListParser jsonRouteListParser = new JsonRouteListParser("");
+        }
+
+        new updateListTask().execute(jsonRouteListParser.getRoute_list());
+
+        jsonRouteListParser.ParseJsonFile();
+        jsonRouteListParser.getRoute_list();
+
+    }
+
+    private class updateListTask extends AsyncTask<List<RouteInfo>, Void, Void> {
+        String fromText;
+        String toText;
+        List<RouteInfo> PublishinList;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            fromText = fromTextView.getText().toString();
+            toText = toTextView.getText().toString();
+            PublishinList=new ArrayList<RouteInfo>();
+        }
+
+        @Override
+        protected Void doInBackground(List<RouteInfo>... params) {
+            RouteInfo tempinfo = new RouteInfo(null,fromText,toText);
+            if (params[0] != null) {
+                List<RouteInfo> routeInfosbkList = params[0];
+                for (RouteInfo r : routeInfosbkList) {
+                    if(r.equals(tempinfo))
+                    {
+                        PublishinList.add(r);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if(route_listview!=null){
+                if(PublishinList.size()>0){
+                   routeInfoAdapter.setSearchList(PublishinList);
+                }
+             //set thiis publishing result adapter of listview
+            }
+
+        }
     }
 }
