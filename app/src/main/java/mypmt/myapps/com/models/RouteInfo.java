@@ -63,16 +63,17 @@ public class RouteInfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RouteInfo routeInfo = (RouteInfo) o;
+        RouteInfo tempInfo = (RouteInfo) o;
 
-        if (!from_str.contains(routeInfo.from_str)) return false;
+       /* if (!from_str.contains(routeInfo.from_str)) return false;
         if (!to_str.contains(routeInfo.to_str)) return false;
-
-        if(!routeInfo.from_str.toLowerCase().contains(from_str.toLowerCase())) return false;
+*/
+       /* if(!routeInfo.from_str.toLowerCase().contains(from_str.toLowerCase())) return false;
         if(!routeInfo.to_str.toLowerCase().contains(to_str.toLowerCase())) return false;
 
         if(!routeInfo.to_str.toLowerCase().contains(from_str.toLowerCase())) return false;
-        if(!routeInfo.from_str.toLowerCase().contains(to_str.toLowerCase())) return false;
+        if(!routeInfo.from_str.toLowerCase().contains(to_str.toLowerCase())) return false;*/
+
 
         return true;
     }

@@ -237,13 +237,9 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         if (jsonRouteListParser == null) {
             JsonRouteListParser jsonRouteListParser = new JsonRouteListParser("");
             jsonRouteListParser.ParseJsonFile();
-            if(!TextUtils.isEmpty(from) && !TextUtils.isEmpty(to))
+            if (!TextUtils.isEmpty(from) && !TextUtils.isEmpty(to))
                 new updateListTask().execute(jsonRouteListParser.getRoute_list());
         }
-
-
-
-
 
 
     }
@@ -267,9 +263,10 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
             if (params[0] != null) {
                 List<RouteInfo> routeInfosbkList = params[0];
                 for (RouteInfo r : routeInfosbkList) {
-                    if (r.equals(tempinfo)) {
+                   if(r.equals(tempinfo)){
                         PublishinList.add(r);
                     }
+
                 }
             }
 
