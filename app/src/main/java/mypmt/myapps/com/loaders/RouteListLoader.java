@@ -3,6 +3,9 @@ package mypmt.myapps.com.loaders;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +27,13 @@ public class RouteListLoader extends AsyncTaskLoader<List<RouteInfo>> {
     public List<RouteInfo> loadInBackground() {
         route_list = new ArrayList<RouteInfo>();
         jsonRouteListParser = new JsonRouteListParser(null);
-        jsonRouteListParser.ParseJsonFile();
+        try {
+            jsonRouteListParser.ParseJsonFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         this.route_list = jsonRouteListParser.getRoute_list();
         return this.route_list;
     }

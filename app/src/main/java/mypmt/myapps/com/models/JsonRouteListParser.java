@@ -8,7 +8,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class JsonRouteListParser {
 
     }
 
-    public void ParseJsonFile() {
+    public void ParseJsonFile() throws ArrayIndexOutOfBoundsException, IOException, ParseException {
         File Rootdir = Environment.getExternalStorageDirectory();
         if (Rootdir != null) {
             mFile = new File(Rootdir.getPath() + "/" + GlobalData.APP_FOLDER + "/" + GlobalData.ROUTE_INDET_FILE);
@@ -56,41 +55,36 @@ public class JsonRouteListParser {
                 return;
             } else {
                 JSONParser jsonParser = new JSONParser();
-                try {
-                    freader = new FileReader(mFile);
-                    JSONObject jsonObject = (JSONObject) jsonParser.parse(freader);
-                    Set<Object> set = jsonObject.keySet();
-                    //System.out.println(set);
-                    Iterator<Object> itrator = set.iterator();
-                    while (itrator.hasNext()) {
-                        System.out.println(itrator.next().toString());
 
-                        JSONArray route_details_array = (JSONArray) jsonObject.get(itrator.next());
-                        JSONObject jsonObject1 = (JSONObject) route_details_array.get(0);
+                freader = new FileReader(mFile);
+                JSONObject jsonObject = (JSONObject) jsonParser.parse(freader);
+                Set<Object> set = jsonObject.keySet();
+                //System.out.println(set);
+                Iterator<Object> itrator = set.iterator();
+                while (itrator.hasNext()) {
+                    System.out.println(itrator.next().toString());
 
-                        System.out.print(" " + jsonObject1.get("rout"));
-                        System.out.print(" " + jsonObject1.get("lnk"));
-                        String[] from_to_array = jsonObject1.get("rout").toString().split(" to ");
-                        System.out.println(from_to_array);
+                    JSONArray route_details_array = (JSONArray) jsonObject.get(itrator.next());
+                    JSONObject jsonObject1 = (JSONObject) route_details_array.get(0);
 
-                        if (from_to_array[1].contains(" via ")) {
-                            String toStringReal = from_to_array[1].replace(from_to_array[1].subSequence(from_to_array[1].indexOf("via "), from_to_array[1].length()), "");
-                            this.route_list.add(new RouteInfo(itrator.next().toString(), from_to_array[0], toStringReal));
-                        } else
-                            this.route_list.add(new RouteInfo(itrator.next().toString(), from_to_array[0], from_to_array[1]));
-                        //(route number, from_string,to_string)
+                    System.out.print(" " + jsonObject1.get("rout"));
+                    System.out.print(" " + jsonObject1.get("lnk"));
+                    String[] from_to_array = jsonObject1.get("rout").toString().split(" to ");
+                    System.out.println(from_to_array);
 
-                    }
+                    if (from_to_array[1].contains(" via ")) {
+                        String toStringReal = from_to_array[1].replace(from_to_array[1].subSequence(from_to_array[1].indexOf("via "), from_to_array[1].length()), "");
+                        this.route_list.add(new RouteInfo(itrator.next().toString(), from_to_array[0], toStringReal));
+                    } else
+                        this.route_list.add(new RouteInfo(itrator.next().toString(), from_to_array[0], from_to_array[1]));
+                    //(route number, from_string,to_string)
 
-                    // Collections.sort(this.route_list);
-                    //System.out.println(this.route_list.toString());
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+
+                // Collections.sort(this.route_list);
+                //System.out.println(this.route_list.toString());
+
+
             }
         }
     }

@@ -7,7 +7,6 @@ import android.os.Environment;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -18,8 +17,10 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import mypmt.myapps.com.adapters.RouteInfoAdapter;
@@ -28,6 +29,7 @@ import mypmt.myapps.com.customs.views.CustomAutoComplete;
 import mypmt.myapps.com.loaders.RouteListLoader;
 import mypmt.myapps.com.loaders.StopListLoader;
 import mypmt.myapps.com.models.JsonRouteListParser;
+import mypmt.myapps.com.models.JsonStopListParser;
 import mypmt.myapps.com.models.RouteInfo;
 
 
@@ -123,14 +125,14 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (!TextUtils.isEmpty(fromTextView.getText()) &&
-                !TextUtils.isEmpty(fromTextView.getText())) {
+        if (fromTextView.getText().length() > 0 && fromTextView.getText().length() > 0) {
             Log.i("AutoComplte textview Status :", "Not Empty");
             CharSequence from = fromTextView.getText();
             CharSequence to = toTextView.getText();
             SearchLists(from, to);
 
-        }
+        } else
+            Toast.makeText(this, "Incomplete information!", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -211,7 +213,6 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
     }
 
-
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -224,23 +225,36 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
     @Override
     public void afterTextChanged(Editable s) {
-        if (!TextUtils.isEmpty(fromTextView.getText()) &&
-                !TextUtils.isEmpty(fromTextView.getText())) {
-            Log.i("AutoComplter textview Status :", "Not Empty");
+        if (fromTextView.getText().length() > 0 && fromTextView.getText().length() > 0) {
+            Log.i("AutoComplte textview Status :", "Not Empty");
             CharSequence from = fromTextView.getText();
             CharSequence to = toTextView.getText();
 
         }
     }
 
+    /*
+    * @from text is from Stop
+    * @to text is To Stop
+    * */
     private void SearchLists(CharSequence from, CharSequence to) {
-        if (jsonRouteListParser == null) {
-            JsonRouteListParser jsonRouteListParser = new JsonRouteListParser("");
+        /*if (jsonRouteListParser == null)
+            jsonRouteListParser = new JsonRouteListParser("");
+        try {
             jsonRouteListParser.ParseJsonFile();
-            if (!TextUtils.isEmpty(from) && !TextUtils.isEmpty(to))
-                new updateListTask().execute(jsonRouteListParser.getRoute_list());
+        } catch (IOException e) {
+            Toast.makeText(this, "File may be damaged or moved!", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        } catch (ParseException e) {
+            Toast.makeText(this, "Invalid data! Can not parse!", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }catch (ArrayIndexOutOfBoundsException e){
+            Toast.makeText(this, "Array Index out of bound exception!", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
-
+        if (!TextUtils.isEmpty(from) && !TextUtils.isEmpty(to))
+            new updateListTask().execute(jsonRouteListParser.getRoute_list());
+        */
 
     }
 
@@ -248,6 +262,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         String fromText;
         String toText;
         List<RouteInfo> PublishinList;
+        HashMap<String, String> hashMap;
 
         @Override
         protected void onPreExecute() {
@@ -255,20 +270,28 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
             fromText = fromTextView.getText().toString();
             toText = toTextView.getText().toString();
             PublishinList = new ArrayList<RouteInfo>();
+            JsonStopListParser jsonStopListParser = new JsonStopListParser(null);
+            if (hashMap != null) {
+                hashMap = jsonStopListParser.getStop_url_map();
+                Log.i("Hash Map::", hashMap.toString());
+            }
         }
 
         @Override
         protected Void doInBackground(List<RouteInfo>... params) {
-            RouteInfo tempinfo = new RouteInfo(null, fromText, toText);
+           /* RouteInfo tempinfo = new RouteInfo(null, fromText, toText);
             if (params[0] != null) {
                 List<RouteInfo> routeInfosbkList = params[0];
                 for (RouteInfo r : routeInfosbkList) {
-                   if(r.equals(tempinfo)){
+                    if (r.equals(tempinfo)) {
                         PublishinList.add(r);
                     }
 
                 }
             }
+            */
+            //Checking both stops details are present or not? if yes match all possible records or else download that details...
+
 
             return null;
         }

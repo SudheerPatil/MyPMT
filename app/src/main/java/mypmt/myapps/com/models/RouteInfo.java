@@ -4,7 +4,8 @@ package mypmt.myapps.com.models;
  * Created by android on 11-02-2015.
  * All Copyrights reserved to patilsudheer1991@gmail.com
  */
-public class RouteInfo {
+public class
+        RouteInfo {
     private String route_num;
     private String from_str,to_str,via_str;
     //String route_num_str;
@@ -58,25 +59,25 @@ public class RouteInfo {
         return getRoute_num();
     }
 
-    @Override
+   /* @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         RouteInfo tempInfo = (RouteInfo) o;
 
-       /* if (!from_str.contains(routeInfo.from_str)) return false;
+       *//* if (!from_str.contains(routeInfo.from_str)) return false;
         if (!to_str.contains(routeInfo.to_str)) return false;
-*/
-       /* if(!routeInfo.from_str.toLowerCase().contains(from_str.toLowerCase())) return false;
+*//*
+       *//* if(!routeInfo.from_str.toLowerCase().contains(from_str.toLowerCase())) return false;
         if(!routeInfo.to_str.toLowerCase().contains(to_str.toLowerCase())) return false;
 
         if(!routeInfo.to_str.toLowerCase().contains(from_str.toLowerCase())) return false;
-        if(!routeInfo.from_str.toLowerCase().contains(to_str.toLowerCase())) return false;*/
+        if(!routeInfo.from_str.toLowerCase().contains(to_str.toLowerCase())) return false;*//*
 
 
         return true;
-    }
+    }*/
 
     @Override
     public int hashCode() {

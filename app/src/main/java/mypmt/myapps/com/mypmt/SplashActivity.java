@@ -98,8 +98,10 @@ public class SplashActivity extends Activity {
                     bab.append((byte) current);
                 }
 
-
-                fos = new FileOutputStream(new File(myDir.getPath() + "/" + GlobalData.STOP_INDEX_FILE));
+                File stopindexjson = new File(myDir.getPath() + "/" + GlobalData.STOP_INDEX_FILE);
+                if (!stopindexjson.exists())
+                    stopindexjson.createNewFile();
+                fos = new FileOutputStream(stopindexjson);
                 fos.write(bab.toByteArray());
 
 
@@ -171,7 +173,7 @@ public class SplashActivity extends Activity {
                 int current = 0;
 
                 while ((current = bis.read()) != -1) {
-                    publishProgress(++counter_progrss+50);
+                    publishProgress(++counter_progrss + 50);
                     bab.append((byte) current);
                 }
 
