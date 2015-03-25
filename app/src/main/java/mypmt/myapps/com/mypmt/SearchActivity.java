@@ -19,6 +19,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +32,7 @@ import mypmt.myapps.com.customs.views.CustomAutoComplete;
 import mypmt.myapps.com.loaders.RouteListLoader;
 import mypmt.myapps.com.loaders.StopListLoader;
 import mypmt.myapps.com.models.JsonRouteListParser;
+import mypmt.myapps.com.models.JsonStopInfoParser;
 import mypmt.myapps.com.models.JsonStopListParser;
 import mypmt.myapps.com.models.RouteInfo;
 
@@ -253,16 +257,30 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
             e.printStackTrace();
         }
         if (!TextUtils.isEmpty(from) && !TextUtils.isEmpty(to))
-            new updateListTask().execute(jsonRouteListParser.getRoute_list());
-        */
 
+        */
+        new updateListTask().execute();
     }
 
-    private class updateListTask extends AsyncTask<List<RouteInfo>, Void, Void> {
+    private class updateListTask extends AsyncTask<Void, Void, Void> {
         String fromText;
         String toText;
         List<RouteInfo> PublishinList;
         HashMap<String, String> hashMap;
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            //Checking both stops details are present or not? if yes match all possible records or else download that details...
+            try {
+                new JsonStopInfoParser().ParseJsonFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -277,9 +295,10 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
             }
         }
 
-        @Override
-        protected Void doInBackground(List<RouteInfo>... params) {
-           /* RouteInfo tempinfo = new RouteInfo(null, fromText, toText);
+        /*@Override
+        protected Void doInBackground()(Void... params) {
+
+           *//* RouteInfo tempinfo = new RouteInfo(null, fromText, toText);
             if (params[0] != null) {
                 List<RouteInfo> routeInfosbkList = params[0];
                 for (RouteInfo r : routeInfosbkList) {
@@ -289,12 +308,11 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
                 }
             }
-            */
-            //Checking both stops details are present or not? if yes match all possible records or else download that details...
+            *//*
 
 
-            return null;
-        }
+
+        }*/
 
         @Override
         protected void onPostExecute(Void aVoid) {
